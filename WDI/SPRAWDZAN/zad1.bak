@@ -1,0 +1,28 @@
+program sito;
+var
+tab:array of boolean;
+n:integer;
+i,j:integer;
+begin
+write('Podaj n:');
+readln(n);
+setlength(tab, n+1);
+for i := 3 to n do
+tab[i] := false;
+
+for i := 2 to n div 2 do
+begin
+j := 2;
+while i*j <= n do
+begin
+//writeln(i*j);
+tab[i*j] := true;
+inc(j)
+end;
+end;
+
+for i := 3 to n do
+if not tab[i] then
+writeln(i);
+    readln;
+end.

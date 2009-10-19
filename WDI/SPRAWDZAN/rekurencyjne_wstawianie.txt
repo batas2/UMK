@@ -1,0 +1,19 @@
+<pre><p>procedure wstaw(var poczatek:welement;d:wwezel);
+{T&sup1; procedur&ecirc; masz napisa&aelig;}
+var
+	nowy:welement;
+begin
+	
+	if ((poczatek &lt;&gt;NIL) and (poczatek^.dane^.czestosc&lt;d^.czestosc)) then
+		wstaw(poczatek^.nastepny,d)
+	else
+		begin
+			new(nowy);
+			nowy^.dane:=d;
+			nowy^.nastepny:=poczatek;
+			poczatek:=nowy;	
+
+		end;
+
+end;
+</p></pre>

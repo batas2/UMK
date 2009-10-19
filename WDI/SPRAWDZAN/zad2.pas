@@ -1,0 +1,25 @@
+program zad2;
+uses WdIUnit;
+var
+F1: text;
+F2: file of integer;
+fout: text;
+a,b:integer;
+begin
+assign(f1, 'C:\Users\guest\Desktop\SPRAWDZAN\dane1.in');
+assign(f2, 'C:\Users\guest\Desktop\SPRAWDZAN\dane2.in');
+assign(fout, 'C:\Users\guest\Desktop\SPRAWDZAN\wynik.out');
+reset(f1);
+reset(f2);
+rewrite(fout);
+while (not EOF(f1)) and (not EOF(f2)) do
+begin
+readln(f1, a);
+read(f2, b);
+if (a mod 3 = 0) or (b mod 3 = 0) or (a+b mod 3 = 0) then
+writeln(fout, 'nww(',a,',',b,')=',a*b div NWD(a,b));
+end;
+close(f1);
+close(f2);
+close(fout);
+end.
