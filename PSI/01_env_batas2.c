@@ -3,8 +3,8 @@
 
 int main(int argc, char *argv[], char *environ[])
 {
-	int i;
-	for(i = 0; i < sizeof(environ); i++){
-		printf("%s\n", environ[i]);
+	int i = 0;
+	while(environ[i] != '\0'){
+		printf("%s\n", environ[i++]);
 	}
 }
