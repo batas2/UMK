@@ -69,7 +69,7 @@ int main()
 				execvp(arg[0], arg);
 				/*
 				 * Jesli potomek dochodzi do tego miejsc oznacza to
-				 * ze funkcja execvp nie wykona³a sie pomyœlnie
+				 * ze funkcja execvp nie wykona³a sie pomyslnie
 				 */
 				printf("Blad, nie ma takiego polecenia!\n");
 				exit(0);
@@ -90,10 +90,5 @@ int main()
 				}
 			}
 		}
-
-		for(i = 0; i < 10; i++){
-			free(arg[i]);
-		}
-		free(cmd);
 	}
 }
