@@ -7,5 +7,9 @@
 #include <signal.h>
 #include <string.h>
 
-#define SERVER_FIFO "/tmp/serwer_fifo"
-#define CLIENT_FIFO "/tmp/client_fifo"
+#define SIZE_LINE	1024 * 10
+#define SIZE_CMD	256 * 4
+#define SIZE_FIFO	256 * 4
+
+#define SERWER_FIFO	"/tmp/serwer_fifo"
+#define CLIENT_FIFO	"/tmp/client_fifo"

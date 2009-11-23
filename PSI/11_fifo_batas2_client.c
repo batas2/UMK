@@ -1,49 +1,40 @@
 #include "11_fifo_batas2_head.c"
 
-int main()
+int main(int argc, char *argv[])
 {
 
-	int f_serv, f_cli;
-	char line[512];
-
-	char fifo[256];
-	sprintf(fifo, "%s%d", CLIENT_FIFO, getpid());
-
-	mkfifo(fifo, 0770);
+	if(argc == 2){
+		int		f_serv, f_cli;		//Deskryptor fifo odpowiednio serwera, klienta
+		char	line[SIZE_LINE];	//Bufor do zczytywania wyniku od serwera
+		char	cmd[SIZE_CMD];		//Ciag zawierajacy sciezke do fifo oraz polecenie; Do wyslania do serwera
+		char	fifo[SIZE_FIFO];	//sciezka do fifo klienta
+		
+		sprintf(fifo, "%s%d\0", CLIENT_FIFO, getpid());
+		mkfifo(fifo, 0600);
 	
-	f_serv = open(SERVER_FIFO, O_WRONLY);
-	f_cli = open(fifo, O_RDONLY | O_CREAT);
-
-	char cmd[512];
-	sprintf(cmd, "%s:%s", fifo, "ls");
-	write(f_serv, cmd, sizeof(cmd));
-
-	sleep(2);
-
-	char buf[1000];
-	read(f_cli, buf, sizeof(buf));
-
-	printf("%s", buf);
-	
-/*	while(1){
-		read(fileno(f_serv), line, sizeof(line));
-		int pid = 0;
-		if( (pid = fork()) < 0){
-			perror("Blad fork");
-		}else{
-			if(pid == 0){
-				char cmd[256], fifo[256];
-				podziel(line, cmd, fifo);
-
-				mkfifo(fifo, 0770);
-				f_cli = open(fifo, O_WRONLY);
-				
-				dup2(f_cli, fileno(stdout));
-				execlp(cmd, cmd, NULL);		
-			}else{
-				printf("CLIENT: %s", line);
-			}		
+		if( (f_serv = open(SERWER_FIFO, O_RDWR)) == -1){
+			perror("Blad: Client-Open-SerwerFifo");
+			exit(1);
 		}
-	}*/ 
+		
+		if( (f_cli = open(fifo, O_RDONLY | O_NONBLOCK)) == -1){
+			perror("Blad: Client-Open-ClientFifo");
+			exit(1);
+		}
+
+		sprintf(cmd, "%s:%s\n", fifo, argv[1]);
+		write(f_serv, cmd, sizeof(char) * SIZE_CMD);
+
+		int v;
+		while( (v = read(f_cli, line, sizeof(char) * SIZE_LINE)) == 0){
+			sleep(1);
+		}
+
+		printf("%s", line);
+		execlp("rm", "rm", "-f", fifo, NULL);
+	}else{
+		printf("Podaj jako parametr polecenie\n");
+	}
+	 
 }
 
