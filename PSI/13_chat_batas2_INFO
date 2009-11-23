@@ -1,0 +1,10 @@
+Czat dziala tylko dla dwoch osob, nalezy najpierw uruchomic serwer a potem clienta x2.
+Serwer dziala dopoki nie  dostanie komunikatu SIGUSR1
+Client dziala dopoki uzytkownic nie wpisze wiadomosci EXIT
+
+./serwer [log]
+log = 1 => serwer co sekunde wypisuje wartosc pamieci wspoldzielonej
+log = 0 => serwer nic nie wypisuje
+
+./client [nick]
+nick => nick uzytkownika, jesli pusty nickiem staje sie pid
