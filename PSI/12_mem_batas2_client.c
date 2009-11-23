@@ -1,16 +1,11 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/shm.h>
-#include <sys/types.h>
-#include <sys/ipc.h>
+#include "12_mem_batas2_head.h"
 
 int main()
 {
 
 	int *buf;
 
-	int id = shmget(260889, 1, 0600);
+	int id = shmget(MEM_ID, SIZE_MEM, 0600);
 	if(id == -1){
 		perror("Blad-shmget");
 	}
