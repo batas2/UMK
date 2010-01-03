@@ -1,4 +1,4 @@
-#include "11_fifo_batas2_head.c"
+#include "11_fifo_batas2_head.h"
 
 void koniec(int v)
 {

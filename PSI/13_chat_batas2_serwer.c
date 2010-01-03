@@ -1,4 +1,4 @@
-#include "13_chat_batas2_head.c"
+#include "13_chat_batas2_head.h"
 
 int _stop = 0;
 

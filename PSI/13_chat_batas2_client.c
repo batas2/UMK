@@ -1,4 +1,4 @@
-#include "13_chat_batas2_head.c"
+#include "13_chat_batas2_head.h"
 
 /*
  * funkcja sluzaca do wykonanie podniesienia lub opuszeczenia semafora
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 {
 	char	*line;
 	char	nick[10];
-	int		pid = getpid();
+	int	pid = getpid();
 	struct  shmid_ds *mem_buf = malloc(sizeof(struct shmid_ds));
 	struct	sembuf *sem_buf = malloc(sizeof(struct sembuf));
 	
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 		char buf[SIZE_LINE];
 		int w = 0;
 		
-		while (1){
+		while (strcmp(buf, "exit\n") != 0){
 			sem_op(sem_buf, sem_id, 0, -1); //Opuszczam semafor
 			write(fileno(stdout), line, strlen(line));
 
