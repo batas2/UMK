@@ -4,7 +4,10 @@ int _stop = 0;
 int _quiet = 1;
 
 void koniec(int v);
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main(int argc, char *argv[])
 {
 	key_t	k;

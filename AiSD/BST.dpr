@@ -3,6 +3,10 @@ program BST;
 {$APPTYPE CONSOLE}
 
 uses Math;
+{
+ Autor: Bartosz Fr¹ckowiak
+ http://www.batas2.boo.pl/
+}
 
 type
   PRec = ^TRec;

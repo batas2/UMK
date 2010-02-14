@@ -5,7 +5,10 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main(int argc, char *argv[])
 {
 	if(argc == 3){

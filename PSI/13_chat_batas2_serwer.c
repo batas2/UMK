@@ -7,7 +7,10 @@ void koniec(int v)
 	_stop = 1;
 	printf("Serwer zakonczyl swoje dzialanie.\n");
 }
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main(int argc, char *argv[])
 {
 	char	*line;

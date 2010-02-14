@@ -41,7 +41,10 @@ void split(char *str, char *result[])
 	result[i + 1] = NULL; 
 	return;
 }
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main()
 {
 	char *cmd;

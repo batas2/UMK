@@ -1,6 +1,10 @@
 #include<unistd.h>
 #include<stdio.h>
 #include<stdlib.h>
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 main(){
 
 		int pid = 0;

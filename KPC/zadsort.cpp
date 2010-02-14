@@ -27,7 +27,10 @@ void wyswietl(int *tab, int n)
 		cout << tab[i] << "\n";
 	}
 }
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main()
 {
 	int tab[100];

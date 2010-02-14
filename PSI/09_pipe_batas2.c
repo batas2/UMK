@@ -5,7 +5,10 @@
 #include<sys/stat.h>
 #include<fcntl.h>
 #include<string.h>
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main(){
 
 	const int 	buf_size = 1;

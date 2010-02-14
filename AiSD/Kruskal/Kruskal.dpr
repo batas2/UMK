@@ -1,6 +1,10 @@
 program Kruskal;
 
 {$APPTYPE CONSOLE}
+{
+ Autor: Bartosz Fr¹ckowiak
+ http://www.batas2.boo.pl/
+}
 
 Type
   PKrawendz = ^TKrawendz;

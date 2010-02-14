@@ -11,7 +11,10 @@ int list(char **environ)
 		printf("%s\n", environ[i++]);
 	}
 }
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main(int argc, char *argv[])
 {
 	extern char **environ;	//tablica przechowujaca zmienne systemowe

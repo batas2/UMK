@@ -1,5 +1,8 @@
-#include "16_echo_head.c"
-
+#include "16_echo_batas2_head.h"
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main(int argc, char *argv[])
 {
 

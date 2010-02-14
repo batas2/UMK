@@ -1,5 +1,8 @@
 #include "12_mem_batas2_head.h"
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main()
 {
 

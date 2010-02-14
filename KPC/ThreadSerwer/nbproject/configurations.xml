@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="62">
+  <logicalFolder name="root" displayName="root" projectFiles="true">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <logicalFolder name="f1" displayName="lib" projectFiles="true">
+        <logicalFolder name="f1" displayName="net" projectFiles="true">
+          <itemPath>head/lib/net/connection.h</itemPath>
+          <itemPath>head/lib/net/head.h</itemPath>
+          <itemPath>head/lib/net/tcpv4.h</itemPath>
+        </logicalFolder>
+        <itemPath>head/lib/MainThread.h</itemPath>
+        <itemPath>head/lib/client.h</itemPath>
+        <itemPath>head/lib/head.h</itemPath>
+        <itemPath>head/lib/network.h</itemPath>
+      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <logicalFolder name="f1" displayName="lib" projectFiles="true">
+        <logicalFolder name="f1" displayName="net" projectFiles="true">
+          <itemPath>src/lib/net/connection.cpp</itemPath>
+          <itemPath>src/lib/net/tcpv4.cpp</itemPath>
+        </logicalFolder>
+        <itemPath>src/lib/MainThread.cpp</itemPath>
+        <itemPath>src/lib/client.cpp</itemPath>
+        <itemPath>src/lib/network.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="scripts" projectFiles="true">
+      </logicalFolder>
+      <itemPath>main.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <compilerSet>GNU|GNU</compilerSet>
+        <platform>2</platform>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>/home/batas2/Pobrane/boost_1_41_0</pElem>
+          </incDir>
+          <commandLine>-lpthread</commandLine>
+          <warningLevel>2</warningLevel>
+        </ccTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibFileItem>/home/batas2/Pobrane/boost_1_41_0/stage/lib/libboost_thread.a</linkerLibFileItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <compilerSet>GNU|GNU</compilerSet>
+        <platform>2</platform>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <linkerTool>
+          <linkerLibItems>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+    </conf>
+  </confs>
+</configurationDescriptor>

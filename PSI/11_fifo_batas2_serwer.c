@@ -22,7 +22,10 @@ void podziel(char *in, char *cmd, char *fifo)
 	strcpy(fifo, in);
 	fifo[strlen(fifo) - 1] = '\0';	
 }
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main()
 {
 

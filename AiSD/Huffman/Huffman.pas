@@ -3,6 +3,11 @@ program Huffman;
 {
 //Przykladowy program zamieniajacy tekst "ALA MA KOTA I KOCIAKI" na ciag
 //binarny odpowiadajcy wynikowi algorytmu Huffmana
+{
+ Autor: Bartosz Fr¹ckowiak
+ http://www.batas2.boo.pl/
+}
+
 program Huffman_Koduj;
 
 var

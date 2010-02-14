@@ -1,5 +1,8 @@
 #include "14_msg_batas2_head.h"
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main(int argc, char *argv[])
 {
 	if(argc == 4){

@@ -6,7 +6,10 @@ int a = 10, b = 5;
 
 int sum(int aa, int bb=15);
 double sum(double af, double bf);
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main(){
 	cout << sum(a, b) << "\n";
 	cout << sum(a) << "\n";

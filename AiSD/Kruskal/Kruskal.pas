@@ -1,6 +1,10 @@
 program Kruskal_1;
 {Bartosz Fr¹ckowiak, Algorytm Kruskala
  Zdecydowalem sie reprezentowac zbiory rozlaczane za pomoca list.}
+{
+ Autor: Bartosz Fr¹ckowiak
+ http://www.batas2.boo.pl/
+}
 
 Type
   PKrawendz = ^TKrawendz;  //Rekord odpowiadajacy krawendzi

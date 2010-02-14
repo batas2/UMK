@@ -26,7 +26,10 @@ void msg(char *line,  char *buf, char *nick)
 
 	return;
 }
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main(int argc, char *argv[])
 {
 	char	*line;

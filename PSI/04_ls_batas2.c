@@ -4,7 +4,10 @@
 #include<unistd.h>
 #include<time.h>
 #include<dirent.h>
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 /*
  * funkcja formatujaca czas z time_t na tablice char w formacie: %Y-%m-%d %H:%M:%S
  */

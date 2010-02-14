@@ -1,6 +1,9 @@
 #include<iostream>
 using namespace std;
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main(){
 
 	int tab[10];

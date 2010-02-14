@@ -6,7 +6,10 @@ int a = 10, b = 15;
 void fun(int aa, int bb);
 void funref(int aa, int &bb);
 void funvoid();
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main()
 {
 	cout << a << "  " << b << "\n";

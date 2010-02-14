@@ -1,5 +1,9 @@
 /* print files in current directory in reverse order */
 #include <dirent.h>
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 main(){
     struct dirent **namelist;
     int n;

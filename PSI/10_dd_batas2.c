@@ -62,7 +62,10 @@ int copy(const char *src_path, const char *dest_path,
 	}
 			
 }
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main(int argc, char *argv[])
 {
 	int	block_count = 0, block_size = 0;

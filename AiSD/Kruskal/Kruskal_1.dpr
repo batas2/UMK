@@ -1,6 +1,11 @@
 program Kruskal_1;
 {Bartosz Fr¹ckowiak, Algorytm Kruskala
  Zdecydowalem sie reprezentowac zbiory rozlaczane za pomoca list.}
+ {
+ Autor: Bartosz Fr¹ckowiak
+ http://www.batas2.boo.pl/
+}
+
 {$APPTYPE CONSOLE}
 
 Type
@@ -18,6 +23,9 @@ Type
 
   TWierzcholki = array of PWierzcholek;  //Tablica wskaznikow na rekordu elementow listy (zbioru)
   TKrawendzie = array of PKrawendz;  //Tablica wskaznikow na rekordy krawendzi
+  TDrzewoRozpinajace = array of array of Integer;
+
+ var Plik: Text;
 
 {
  Procedura sortowania szybkiego krawendzi w porzadku nierosnacym,
@@ -84,7 +92,7 @@ begin
   SetLength(Krawendz, m);
   for i := 0 to m - 1 do
     begin
-      Readln(vOd, vDo, vWaga);
+      Readln(Plik, vOd, vDo, vWaga);
       New(Krawendz[i]);
       Krawendz[i]^.kWaga := vWaga;
       Krawendz[i]^.kOd := vOd;
@@ -101,12 +109,15 @@ end;
  m -> liczba krawendzi
 }
 procedure Kraskal(var Korzen, Lisc: TWierzcholki;
-                  var Krawendz: TKrawendzie; m: Integer);
+                  var Krawendz: TKrawendzie; var DrzewoRozp: TDrzewoRozpinajace;
+                  m: Integer);
 var
-  i, a, b: Integer;
+  i, a, b, waga: Integer;
   Buf: PWierzcholek;
 begin
 
+  waga := 0;
+  Writeln('Krawendzie minimalnego drzewa rozpinajacego: ');
   for i := 0 to m - 1 do
     begin
       if Korzen[Krawendz[i]^.kOd] <> Korzen[Krawendz[i]^.kDo] then
@@ -130,9 +141,14 @@ begin
           //Koniec dluzszej listy staje sie konce krotszej
           Inc(Korzen[a]^.Dlugosc, Korzen[b]^.Dlugosc);
           //Zwiekszam zmienna odpowiadajaca za dlugosc listy
-          
-          Writeln(Krawendz[i]^.kOd, ' -- ', Krawendz[i]^.kDo, ' : ', Krawendz[i]^.kWaga);
 
+          //Dodajemy do Minimalnego drzewa Rozpinaj¹cego krawendzie
+          SetLength(DrzewoRozp[Krawendz[i]^.kOd], Length(DrzewoRozp[Krawendz[i]^.kOd]) + 1);
+          DrzewoRozp[Krawendz[i]^.kOd][Length(DrzewoRozp[Krawendz[i]^.kOd]) - 1] := Krawendz[i]^.kDo;
+
+          Writeln(Krawendz[i]^.kOd, ' -- ', Krawendz[i]^.kDo, ' : ', Krawendz[i]^.kWaga);
+          waga := waga + Krawendz[i]^.kWaga;
+          
           //Kazdemu elementowi z list krotszej zmieniamy reprezentanta na reprezentanta listy dluzszej
           Buf := Korzen[b];
           while Buf <> nil do
@@ -143,16 +159,22 @@ begin
           //Koniec operacji scalajacych listy
         end;
     end;
-
+    Writeln('Waga minimalnego drzewa rozpinajacego: ', waga);
 end;
 
 var
   n, m: Integer;
   Krawendz: TKrawendzie;
   Korzen, Lisc: TWierzcholki;
+  DrzewoRozp: TDrzewoRozpinajace;
 begin
-  Readln(n, m);
+  AssignFile(Plik, 'dane.in');
+  Reset(Plik);
+  Readln(Plik, n, m);
+  SetLength(DrzewoRozp, n);
   Wczytaj(Korzen, Lisc, Krawendz, n, m);
   QucikSort(Krawendz, 0, m - 1);
-  Kraskal(Korzen, Lisc, Krawendz, m);
+  Kraskal(Korzen, Lisc, Krawendz, DrzewoRozp, m);
+    Closefile(Plik);
+  Readln;
 end.

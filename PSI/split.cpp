@@ -26,7 +26,10 @@ void split_a(char *str, char *result[])
 	result[i][strlen(result[i]) - 1] = '\0';
 	return;
 }
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int _tmain(int argc, _TCHAR* argv[])
 {
 	char cmd[255];

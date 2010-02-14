@@ -2,7 +2,10 @@
 #include<stdio.h>
 #include<pwd.h>
 #include<sys/types.h>
-
+/*
+ * Autor: Bartosz Fr¹ckowiak
+ * wwww:  http://www.batas2.boo.pl/
+ */
 int main(int argc, char *argv[])
 {
 	if(argc > 1){

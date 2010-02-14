@@ -1,5 +1,8 @@
 program Project2;
-
+{
+ Autor: Bartosz Fr¹ckowiak
+ http://www.batas2.boo.pl/
+}
 {$APPTYPE CONSOLE}
 
 uses
