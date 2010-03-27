@@ -1,0 +1,212 @@
+/*
+ * File:   main.cpp
+ * Author: batas2
+ *
+ * Created on 2 marzec 2010, 21:49
+ */
+
+#include <QtGui/QApplication>
+#include <QtGui/QWidget>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QPainter>
+#include <math.h>
+#include <iostream>
+
+inline double pow(double x, int n) {
+    double r = x;
+    for (int i = 1; i < n; i++) {
+        r *= r;
+    }
+    return r;
+}
+
+class Point {
+public:
+    int X, Y;
+
+    Point() {
+        this->X = 0;
+        this->Y = 0;
+    }
+
+    Point(int X, int Y) {
+        this->X = X;
+        this->Y = Y;
+    }
+};
+
+class MyWidget : public QWidget {
+private:
+    int x1, y1, x2, y2;
+    int _w, _h;
+
+    int _i, _j;
+    int _n;
+    long _max;
+
+    QImage *_image;
+    uchar *_bits;
+    Point _points[100];
+
+    void mousePressEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
+    void paintEvent(QPaintEvent *e);
+
+public:
+    MyWidget(int Width, int Height, QWidget *parent = 0);
+
+    void SetPixel(int x, int y, uchar R = 0, uchar G = 0, uchar B = 0) {
+        int b = this->_w * 4 * y + 4 * x;
+        if (b > -1 && b < this->_max) {
+            this->_bits[b] = B;
+            this->_bits[b + 1] = G;
+            this->_bits[b + 2] = R;
+        }
+    }
+
+    void Line(int x1, int y1, int x2, int y2, bool v = false);
+    void Circle(int x, int y, int r);
+    void B_Sklejane(int i);
+};
+
+MyWidget::MyWidget(int Width, int Height, QWidget *parent) : QWidget(parent) {
+    this->x1 = 0;
+    this->x2 = 0;
+    this->y1 = 0;
+    this->y2 = 0;
+
+    this->_w = Width;
+    this->_h = Height;
+
+    this->_i = 0;
+    this->_j = -1;
+    this->_n = 6;
+
+    this->_max = this->_w * this->_h * 4;
+
+    setFixedSize(this->_w, this->_h);
+    _image = new QImage(this->_w, this->_h, QImage::Format_RGB32);
+    this->_bits = _image->bits();
+    memset(_image->bits(), 255, this->_max);
+}
+
+void MyWidget::B_Sklejane(int i) {
+
+    double t = 0;
+    while (t <= 1) {
+        double x = ((1-t)*(1-t)*(1-t)/6)*_points[i - 2].X + ((3*t*t*t - (6*t*t) + 4)/6) * _points[i-1].X + (((-3*t*t*t) + (3*t*t) + (3*t) + 1) /6) *_points[i].X + (t*t*t/6)*_points[i+1].X;
+        double y = ((1-t)*(1-t)*(1-t)/6)*_points[i - 2].Y + ((3*t*t*t - (6*t*t) + 4)/6) * _points[i-1].Y + (((-3*t*t*t) + (3*t*t) + (3*t) + 1) /6) *_points[i].Y + (t*t*t/6)*_points[i+1].Y;
+        SetPixel(x, y);
+        t += 0.001;
+    }
+}
+
+void MyWidget::Circle(int x, int y, int r) {
+    int xi, yi;
+    int xj = x + r;
+    int yj = y;
+
+    for (int i = 1; i <= this->_n; i++) {
+        xi = x + (double) (r * cos((2 * M_PI * i) / this->_n) + 0.5);
+        yi = y + (double) (r * sin((2 * M_PI * i) / this->_n) + 0.5);
+        this->Line(xj, yj, xi, yi);
+        xj = xi;
+        yj = yi;
+    }
+}
+
+void MyWidget::Line(int x1, int y1, int x2, int y2, bool v) {
+    if (x1 == x2) {
+        int yMin = y1 < y2 ? y1 : y2;
+        int yMax = y1 < y2 ? y2 : y1;
+
+        for (int y = yMin; y < yMax; y++) {
+            if ((!v) || (v && ((int) (y / 10 + 0.5) % 2 == 1))) {
+                this->SetPixel(x1, y);
+            }
+        }
+    } else {
+        double a = (double) (y2 - y1) / (double) (x2 - x1);
+        double b = -a * x1 + y1;
+
+        if (a >= -1 && a <= 1) {
+            int xMin = x1 < x2 ? x1 : x2;
+            int xMax = x1 < x2 ? x2 : x1;
+
+            for (int x = xMin; x < xMax; x++) {
+                double y = a * x + b;
+                if ((!v) || (v && ((int) (x / 10 + 0.5) % 2 == 1))) {
+                    this->SetPixel(x, y);
+                }
+            }
+        } else {
+            int yMin = y1 < y2 ? y1 : y2;
+            int yMax = y1 < y2 ? y2 : y1;
+
+            for (int y = yMin; y < yMax; y++) {
+                double x = (y - b) / a;
+                if ((!v) || (v && ((int) (y / 10 + 0.5) % 2 == 1))) {
+                    this->SetPixel(x, y);
+                }
+            }
+        }
+    }
+}
+
+void MyWidget::paintEvent(QPaintEvent *e) {
+
+    memset(_image->bits(), 255, this->_max);
+
+    for (int i = 0; i < this->_i; i++) {
+        Circle(this->_points[i].X, this->_points[i].Y, 5);
+    }
+
+    for(int i = 2; i < this->_i - 1; i++){
+        B_Sklejane(i);
+    }
+
+    QPainter paint(this);
+    paint.drawImage(QPoint(0, 0), *_image);
+}
+
+void MyWidget::mousePressEvent(QMouseEvent *e) {
+
+    int x = e->x();
+    int y = e->y();
+    this->_j = -1;
+
+    for (int i = 0; i < this->_i; i++) {
+        if ((sqrt(pow(_points[i].X - x, 2) + pow(_points[i].Y - y, 2))) <= 5) {
+            this->_j = i;
+            break;
+
+        }
+    }
+
+    if (this->_j == -1) {
+        this->_points[this->_i].X = x;
+        this->_points[this->_i].Y = y;
+        this->_i++;
+    }
+
+    this->repaint();
+
+}
+
+void MyWidget::mouseMoveEvent(QMouseEvent *e) {
+
+    if (this->_j != -1) {
+        _points[this->_j].X = e->x();
+        _points[this->_j].Y = e->y();
+    }
+    this->repaint();
+
+}
+
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);
+    MyWidget widget(800, 600);
+    widget.show();
+    return app.exec();
+
+}
