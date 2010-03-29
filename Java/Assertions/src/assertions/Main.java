@@ -113,6 +113,10 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+
+//        assert Expression1 ;
+//        assert Expression1 : Expression2 ;
+
         asserionIf(5);
         assertionSwitchA(CarType.Hatchback);
         assertionSwitchB(CarType.Sedan);
