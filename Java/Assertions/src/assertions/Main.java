@@ -1,8 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package assertions;
+
+import java.util.*;
 
 /**
  *
@@ -26,10 +24,6 @@ public class Main {
         }
     }
 
-
-
-
-    
     static void assertionSwitchA(CarType car) {
         switch (car) {
             case Combi:
@@ -68,7 +62,7 @@ public class Main {
         }
     }
 
-    static void asserionFlow() {
+    static void assertionFlow() {
         int[] b = {1, 2, 3, 4, 5, -1};
         for (int i = 0; i < b.length; i++) {
 
@@ -81,6 +75,40 @@ public class Main {
         assert false;
     }
 
+    static void assertionArray(final int[] array) {
+
+        // Inner class that saves state and performs final consistency check
+        class DataCopy {
+
+            private int[] arrayCopy;
+
+            DataCopy() {
+                arrayCopy = (int[]) array.clone();
+            }
+
+            boolean isConsistent() {
+                return Arrays.equals(array, arrayCopy);
+            }
+        }
+
+        DataCopy copy = null;
+
+        // Always succeeds; has side effect of saving a copy of array
+        assert ((copy = new DataCopy()) != null);
+
+        Arrays.sort(array);
+
+        // Ensure array has same ints in same order as before manipulation.
+        assert copy.isConsistent();
+    }
+
+    public static int assertionParameters(int a, int b) {
+        if (a < 0 || b < 0) {
+            throw new IllegalArgumentException("Oba parametry musza byc wieksze od 0");
+        }
+        return a + b;
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -88,6 +116,8 @@ public class Main {
         asserionIf(5);
         assertionSwitchA(CarType.Hatchback);
         assertionSwitchB(CarType.Sedan);
-        asserionFlow();
+        assertionFlow();
+        assertionArray(new int[]{5, 4, 2, 4});
+        assertionParameters(5, 8);
     }
 }
