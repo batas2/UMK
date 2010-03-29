@@ -48,17 +48,9 @@ public class Main {
 
         Arrays.sort(str1c);
         Arrays.sort(str2c);
-        boolean sa = true;
-        if (str1c.length == str2c.length) {
-            for (int i = 0; i < str1c.length; i++) {
-                if ((str1c[i] != str2c[i]) && sa) {
-                    System.out.println("Nie sa anagramami");
-                    sa = false;
-                }
-            }
-            if (sa) {
-                System.out.println("sa anagramami");
-            }
+
+        if (Arrays.equals(str1c, str2c)) {
+            System.out.println("sa anagramami");
         } else {
             System.out.println("Nie sa anagramami");
         }
