@@ -21,10 +21,14 @@ public class Main {
         } else if (v % 3 == 1) {
             System.out.println("Reszta z dzielnia: 1");
         } else {
-            assert v % 3 == 2 : v;
+            assert v % 4 == 2 : v;
             System.out.println("Reszta z dzielnia: 2");
         }
     }
+
+
+
+
 
     static void assertionSwitchA(CarType car) {
         switch (car) {
