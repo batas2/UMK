@@ -26,10 +26,6 @@ public class Main {
         }
     }
 
-
-
-
-
     static void assertionSwitchA(CarType car) {
         switch (car) {
             case Combi:
