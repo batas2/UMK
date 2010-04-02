@@ -8,12 +8,11 @@
 #include "MyWidget.h"
 #include "modes.cpp"
 #include <stdio.h>
-#include <iostream>
 
 int (*func[29])(int a, int b);
 
 void MyWidget::setSliderValue(int v) {
-    char buf[36];
+    char buf[18];
     sprintf(buf, "Opacity (%d/100)", v);
     _groupBox->setTitle(buf);
     repaint();
@@ -21,7 +20,6 @@ void MyWidget::setSliderValue(int v) {
 
 void MyWidget::setComboValue(int v) {
     _selectedFunc = v;
-    std::cout << v << std::endl;
     repaint();
 }
 
@@ -111,6 +109,8 @@ MyWidget::MyWidget(int Width, int Height, QWidget *parent) : QWidget(parent) {
     func[27] = logicalORMode;
     func[28] = logicalANDMode;
 
+    initCosineTab();
+
 }
 
 void MyWidget::createImage(double alpha) {
@@ -123,7 +123,8 @@ void MyWidget::createImage(double alpha) {
         for (int i = 0; i < _picWidth; i++) {
             int pos = (_picWidth * j + i) << 2;
             for (int k = 0; k < 3; k++) {
-                dest[pos + k] = A[pos + k]*(1 - alpha) + func[_selectedFunc](A[pos + k], B[pos + k]) * alpha;
+                int n = pos + k;
+                dest[n] = A[n]*(1 - alpha) + func[_selectedFunc](A[n], B[n]) * alpha;
             }
         }
     }
