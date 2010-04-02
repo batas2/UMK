@@ -1,5 +1,12 @@
 #include <math.h>
 
+double CosineTab[256];
+
+void initCosineTab() {
+    for (int i = 0; i < 256; i++)
+        CosineTab[i] = 64 - cos(i * M_PI / 255)*64;
+}
+
 int normalMode(int a, int b) {
     return b;
 }
@@ -203,10 +210,6 @@ int stampMode(int a, int b) {
 }
 
 int interpolationMode(int a, int b) {
-    double CosineTab[256];
-    for (int i = 0; i < 256; i++)
-        CosineTab[i] = 64 - cos(i * M_PI / 255)*64;
-
     int c = CosineTab[b] + CosineTab[a];
     if (c > 255) return 255;
     else
