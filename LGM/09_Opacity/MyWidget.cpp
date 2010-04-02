@@ -37,11 +37,11 @@ MyWidget::MyWidget(int Width, int Height, QWidget *parent) : QWidget(parent) {
     _imageB = new QImage("/home/batas2/UMK/LGM/09_Opacity/ptok.jpg");
 
     _groupBox = new QGroupBox(this);
-    _groupBox->setGeometry(QRect(0, 300, 400, 50));
+    _groupBox->setGeometry(QRect(0, 300, 400, 100));
     _groupBox->setTitle("Opacity (0/100)");
 
     _comboBox = new QComboBox(_groupBox);
-    _comboBox->setGeometry(QRect(10, 20, 180, 25));
+    _comboBox->setGeometry(QRect(10, 30, 380, 25));
     _comboBox->insertItems(0, QStringList()
             << "normal mode"
             << "average mode"
@@ -76,7 +76,7 @@ MyWidget::MyWidget(int Width, int Height, QWidget *parent) : QWidget(parent) {
     _slider = new QSlider(_groupBox);
     _slider->setOrientation(Qt::Horizontal);
     _slider->setRange(0, 100);
-    _slider->setGeometry(QRect(200, 20, 260, 25));
+    _slider->setGeometry(QRect(10, 60, 380, 25));
 
     connect(_slider, SIGNAL(sliderMoved(int)), this, SLOT(setSliderValue(int)));
     connect(_comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setComboValue(int)));
