@@ -63,10 +63,12 @@ private:
     QLabel *lblb;
     QSlider *Sliderb;
 
+    double* MatrixXVector(const double M[3][3], double V[3]);
+
 public:
     MyWidget(int Width, int Height, QWidget *parent = 0);
 
-    void paintEvent(QPaintEvent *e);
+    void paintEvent(QPaintEvent * e);
 
     void Lab2RGB(int L, int a, int b, int *R, int *G, int *B);
 
