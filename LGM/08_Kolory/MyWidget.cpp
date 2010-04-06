@@ -7,6 +7,7 @@
 
 #include "MyWidget.h"
 #include <stdio.h>
+#include <math.h>
 
 void MyWidget::setRSliderValue(int v) {
     char buf[18];
@@ -104,7 +105,7 @@ void MyWidget::setLSliderValue(int v) {
 
 void MyWidget::setaSliderValue(int v) {
     char buf[18];
-    sprintf(buf, "a: (%d/255)", v);
+    sprintf(buf, "a: (%d/100)", v);
     lbla->setText(buf);
     Lab(Slidera->value(), 1);
     repaint();
@@ -112,7 +113,7 @@ void MyWidget::setaSliderValue(int v) {
 
 void MyWidget::setbSliderValue(int v) {
     char buf[18];
-    sprintf(buf, "b: (%d/255)", v);
+    sprintf(buf, "b: (%d/150)", v);
     lblb->setText(buf);
     Lab(Sliderb->value(), 2);
     repaint();
@@ -197,22 +198,75 @@ void MyWidget::Lab(int v, int n) {
     }
 }
 
+double* MyWidget::MatrixXVector(const double M[3][3], double V[3]) {
+    double *R = new double[3];
+    for (int i = 0; i < 3; i++) {
+        R[i] = 0;
+        for (int j = 0; j < 3; j++) {
+            R[i] += M[i][j] * V[j];
+        }
+    }
+    return R;
+}
+
 void MyWidget::Lab2RGB(int L, int a, int b, int *R, int *G, int *B) {
 
-    *R = L;
-    *G = a;
-    *B = b;
+    //Aktualny standart CIE
+    const double epsilon = 0.008856;
+    const double K = 903.3;
+
+    //Zamierzany standart CIE
+    //const double epsilon = 216 / 24389;
+    //const double K = 24389 / 27;
+
+    //Lab -> XYZ
+    double Fy = (L + 16) / 116;
+    double Fx = a / 500 + Fy;
+    double Fz = Fy - b / 200;
+
+    double Fx3 = Fx * Fx *Fx;
+    double Fz3 = Fz * Fz *Fz;
+
+    double xr = Fx3 > epsilon ? Fx3 : (116 * Fx - 16) / K;
+    double yr = L > K * epsilon ? (L + 16 / 116)*(L + 16 / 116)*(L + 16 / 116) : L / K;
+    double zr = Fz3 > epsilon ? Fz3 : (116 * Fz - 16) / K;
+
+    double Xr = 1;
+    double Yr = 1;
+    double Zr = 1;
+
+    double XYZ[3];
+    XYZ[0] = xr * Xr;
+    XYZ[1] = yr * Yr;
+    XYZ[2] = zr * Zr;
+
+    //XYZ -> RGB
+
+    //CIE RGB
+    const double gamma = 2.2;
+    const double M[3][3] = {
+        {2.3706743, -0.9000405, -0.4706338},
+        {-0.5138850, 1.4253036, 0.0885814},
+        {0.0052982, -0.0146949, 1.0093968}
+    };
+
+    double *rgb = MatrixXVector(M, XYZ);
+
+    *R = pow(rgb[0], 1 / gamma);
+    *G = pow(rgb[1], 1 / gamma);
+    *B = pow(rgb[2], 1 / gamma);
+
     return;
 
 }
 
-void MyWidget::paintEvent(QPaintEvent *e) {
+void MyWidget::paintEvent(QPaintEvent * e) {
     QPainter paint(this);
     paint.drawImage(QPoint(0, 0), *_image);
     memset(_bits, 255, _max);
 }
 
-MyWidget::MyWidget(int Width, int Height, QWidget *parent) : QWidget(parent) {
+MyWidget::MyWidget(int Width, int Height, QWidget * parent) : QWidget(parent) {
 
     _w = 255;
     _h = 255;
@@ -310,18 +364,21 @@ MyWidget::MyWidget(int Width, int Height, QWidget *parent) : QWidget(parent) {
     lblL->setGeometry(QRect(9, 32, 120, 16));
     SliderL = new QSlider(grpBoxLab);
     SliderL->setGeometry(QRect(9, 51, 256, 23));
+    SliderL->setMaximum(100);
     SliderL->setOrientation(Qt::Horizontal);
 
     lbla = new QLabel(grpBoxLab);
     lbla->setGeometry(QRect(9, 78, 120, 16));
     Slidera = new QSlider(grpBoxLab);
     Slidera->setGeometry(QRect(9, 97, 256, 23));
+    Slidera->setRange(-150, 100);
     Slidera->setOrientation(Qt::Horizontal);
 
     lblb = new QLabel(grpBoxLab);
     lblb->setGeometry(QRect(9, 124, 120, 16));
     Sliderb = new QSlider(grpBoxLab);
     Sliderb->setGeometry(QRect(9, 143, 256, 23));
+    Sliderb->setRange(-100, 150);
     Sliderb->setOrientation(Qt::Horizontal);
 
     grpBoxRGB->setTitle("RGB");
@@ -341,9 +398,9 @@ MyWidget::MyWidget(int Width, int Height, QWidget *parent) : QWidget(parent) {
     lblV->setText("V: (0/255)");
 
     grpBoxLab->setTitle("Lab");
-    lblL->setText("L: (0/255)");
-    lbla->setText("a: (0/255)");
-    lblb->setText("b: (0/255)");
+    lblL->setText("L: (0/100)");
+    lbla->setText("a: (0/100)");
+    lblb->setText("b: (0/150)");
 
     connect(SliderR, SIGNAL(sliderMoved(int)), this, SLOT(setRSliderValue(int)));
     connect(SliderG, SIGNAL(sliderMoved(int)), this, SLOT(setGSliderValue(int)));
