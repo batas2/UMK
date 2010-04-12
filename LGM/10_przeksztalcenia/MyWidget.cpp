@@ -51,10 +51,126 @@ void MyWidget::setTranYSliderValue(int) {
 }
 
 void MyWidget::paintEvent(QPaintEvent * e) {
-    p();
+    p2();
     QPainter paint(this);
     paint.drawImage(QPoint(0, 0), *_imageDest);
     memset(_bitsDest, 255, _maxDest);
+}
+
+double* MyWidget::MatrixXVector(double **M, double *V) {
+    double *R = new double[3];
+    for (int i = 0; i < 3; i++) {
+        R[i] = 0;
+        for (int j = 0; j < 3; j++) {
+            R[i] += M[i][j] * V[j];
+        }
+    }
+    return R;
+}
+
+double** MyWidget::MatrixXMatix(double **A, double **B) {
+    double **W = new double*[3];
+    for (int i = 0; i < 3; i++) {
+        W[i] = new double[3];
+    }
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            W[i][j] = 0;
+            for (int k = 0; k < 3; k++) {
+                W[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
+    return W;
+}
+
+void MyWidget::p2() {
+
+    double **To = new double*[3];
+    for (int i = 0; i < 3; i++) {
+        To[i] = new double[3];
+    }
+    To[0][0] = 1;
+    To[1][1] = 1;
+    To[2][2] = 1;
+    To[1][2] = 250;
+    To[0][2] = 250;
+
+    double **T_o = new double*[3];
+    for (int i = 0; i < 3; i++) {
+        T_o[i] = new double[3];
+    }
+    To[0][0] = 1;
+    To[1][1] = 1;
+    To[2][2] = 1;
+    To[1][2] = -200;
+    To[0][2] = -150;
+
+    double **Tr = new double*[3];
+    for (int i = 0; i < 3; i++) {
+        Tr[i] = new double[3];
+    }
+    To[0][0] = 1;
+    To[1][1] = 1;
+    To[2][2] = 1;
+    To[1][2] = Tx;
+    To[0][2] = Ty;
+
+    double **R = new double*[3];
+    for (int i = 0; i < 3; i++) {
+        R[i] = new double[3];
+    }
+    R[0][0] = sin(alfa);
+    R[0][1] = -sin(alfa);
+    R[1][0] = sin(alfa);
+    R[1][1] = cos(alfa);
+    R[2][2] = 1;
+
+    double **Sc = new double*[3];
+    for (int i = 0; i < 3; i++) {
+        Sc[i] = new double[3];
+    }
+
+    Sc[0][0] = Scx;
+    Sc[1][1] = Scy;
+    Sc[2][2] = 1;
+
+    double **Sh = new double*[3];
+    for (int i = 0; i < 3; i++) {
+        Sh[i] = new double[3];
+    }
+    Sh[0][0] = 1;
+    Sh[1][1] = 1;
+    Sh[2][2] = 1;
+    Sh[0][1] = Shx;
+    Sh[1][0] = Shy;
+
+    double **A;
+    A = MatrixXMatix(T_o, Sc);
+    A = MatrixXMatix(Sh, A);
+    A = MatrixXMatix(R, A);
+    A = MatrixXMatix(To, A);
+    A = MatrixXMatix(Tr, A);
+
+    double *v = new double[3];
+
+    for (int i = 0; i < 300; i++) {
+        for (int j = 0; j < 400; j++) {
+
+            Point p = GetPixel(j, i);
+
+            v[0] = p.X;
+            v[1] = p.Y;
+            v[2] = 1;
+
+            v = MatrixXVector(A, v);
+
+            p.X = v[0];
+            p.Y = v[1];
+
+            SetPixel(p);
+        }
+    }
 }
 
 void MyWidget::p() {
@@ -69,7 +185,7 @@ void MyWidget::p() {
 
             //R
             p.X = p.X * cos(alfa) - p.Y * sin(alfa);
-            p.Y = p.X * sin(alfa) + p.Y * cos(alfa);
+            p.Y = -p.X * sin(alfa) + p.Y * cos(alfa);
 
             //Sc
             p.X *= Scx;
