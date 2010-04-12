@@ -55,11 +55,14 @@ private:
     QImage *_imageSrc, *_imageDest;
     uchar *_bitsSrc, *_bitsDest;
 
-public:
-    MyWidget(int Width, int Height, QWidget *parent = 0);
+    void p();
+    void p2();
 
     void paintEvent(QPaintEvent * e);
-    void p();
+    double** MatrixXMatix(double **A, double **B);
+    double* MatrixXVector(double **M, double *V);
+public:
+    MyWidget(int Width, int Height, QWidget *parent = 0);
 
     void SetPixel(Point p) {
         int b = (500 * p.Y + p.X) << 2;
@@ -90,7 +93,7 @@ public slots:
 
     void setTranXSliderValue(int);
     void setTranYSliderValue(int);
-    
+
 };
 
 #endif	/* _MYWIDGET_H */
