@@ -11,47 +11,49 @@
 
 void MyWidget::setSHXSliderValue(int) {
     Shx = SliderSHX->value() / (double) 50;
+    p2();
     repaint();
 }
 
 void MyWidget::setSHYSliderValue(int) {
     Shy = SliderSHY->value() / (double) 50;
+    p2();
     repaint();
-
 }
 
 void MyWidget::setSCXSliderValue(int) {
     Scx = SliderSCX->value() / (double) 50;
+    p2();
     repaint();
-
 }
 
 void MyWidget::setSCYSliderValue(int) {
     Scy = SliderSCY->value() / (double) 50;
+    p2();
     repaint();
-
 }
 
 void MyWidget::setObrotSliderValue(int) {
-    alfa = SliderObrot->value();
-    alfa *= M_PI / 180;
+    alfa = SliderObrot->value() * 0.0174;
+    //0,0174532925199 = Pi / 180
+    p2();
     repaint();
 }
 
 void MyWidget::setTranXSliderValue(int) {
     Tx = SliderTranX->value();
+    p2();
     repaint();
-
 }
 
 void MyWidget::setTranYSliderValue(int) {
     Ty = SliderTranY->value();
+    p2();
     repaint();
-
 }
 
 void MyWidget::paintEvent(QPaintEvent * e) {
-    p2();
+
     QPainter paint(this);
     paint.drawImage(QPoint(0, 0), *_imageDest);
     memset(_bitsDest, 255, _maxDest);
@@ -89,7 +91,9 @@ void MyWidget::p2() {
     double **To = new double*[3];
     for (int i = 0; i < 3; i++) {
         To[i] = new double[3];
+        memset(To[i], 0, sizeof (double) * 3);
     }
+
     To[0][0] = 1;
     To[1][1] = 1;
     To[2][2] = 1;
@@ -99,28 +103,34 @@ void MyWidget::p2() {
     double **T_o = new double*[3];
     for (int i = 0; i < 3; i++) {
         T_o[i] = new double[3];
+        memset(T_o[i], 0, sizeof (double) * 3);
     }
-    To[0][0] = 1;
-    To[1][1] = 1;
-    To[2][2] = 1;
-    To[1][2] = -200;
-    To[0][2] = -150;
+
+    T_o[0][0] = 1;
+    T_o[1][1] = 1;
+    T_o[2][2] = 1;
+    T_o[1][2] = -200;
+    T_o[0][2] = -150;
 
     double **Tr = new double*[3];
     for (int i = 0; i < 3; i++) {
         Tr[i] = new double[3];
+        memset(Tr[i], 0, sizeof (double) * 3);
     }
-    To[0][0] = 1;
-    To[1][1] = 1;
-    To[2][2] = 1;
-    To[1][2] = Tx;
-    To[0][2] = Ty;
+
+    Tr[0][0] = 1;
+    Tr[1][1] = 1;
+    Tr[2][2] = 1;
+    Tr[1][2] = Tx;
+    Tr[0][2] = Ty;
 
     double **R = new double*[3];
     for (int i = 0; i < 3; i++) {
         R[i] = new double[3];
+        memset(R[i], 0, sizeof (double) * 3);
     }
-    R[0][0] = sin(alfa);
+
+    R[0][0] = cos(alfa);
     R[0][1] = -sin(alfa);
     R[1][0] = sin(alfa);
     R[1][1] = cos(alfa);
@@ -129,6 +139,7 @@ void MyWidget::p2() {
     double **Sc = new double*[3];
     for (int i = 0; i < 3; i++) {
         Sc[i] = new double[3];
+        memset(Sc[i], 0, sizeof (double) * 3);
     }
 
     Sc[0][0] = Scx;
@@ -138,7 +149,9 @@ void MyWidget::p2() {
     double **Sh = new double*[3];
     for (int i = 0; i < 3; i++) {
         Sh[i] = new double[3];
+        memset(Sh[i], 0, sizeof (double) * 3);
     }
+
     Sh[0][0] = 1;
     Sh[1][1] = 1;
     Sh[2][2] = 1;
@@ -184,16 +197,22 @@ void MyWidget::p() {
             p.Y -= 150;
 
             //R
-            p.X = p.X * cos(alfa) - p.Y * sin(alfa);
-            p.Y = -p.X * sin(alfa) + p.Y * cos(alfa);
+            double x = p.X * cos(alfa) - p.Y * sin(alfa);
+            double y = p.X * sin(alfa) + p.Y * cos(alfa);
+
+            p.X = x;
+            p.Y = y;
 
             //Sc
             p.X *= Scx;
             p.Y *= Scy;
 
             //Sh
-            p.X += p.Y * Shx;
-            p.Y += p.X * Shy;
+            x = p.Y * Shx;
+            y = p.X * Shy;
+
+            p.X += x;
+            p.Y += y;
 
             p.X += 200;
             p.Y += 150;
