@@ -1,8 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package l120510;
+
+import java.io.*;
+import l120510.*;
 
 /**
  *
@@ -14,6 +13,16 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        try {
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+            String linia;
+            linia = in.readLine();
+            MyDateFormater mdf = new MyDateFormater(linia);
+            System.out.print(mdf.Format());
+        } catch (IOException e) {
+            System.out.print(e);
+        }
+
     }
 }
