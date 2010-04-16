@@ -8,225 +8,346 @@
 #include "MyWidget.h"
 #include <stdio.h>
 #include <math.h>
+#include <iostream>
 
 void MyWidget::setSHXSliderValue(int) {
     Shx = SliderSHX->value() / (double) 50;
-    p2();
+    p3();
     repaint();
 }
 
 void MyWidget::setSHYSliderValue(int) {
     Shy = SliderSHY->value() / (double) 50;
-    p2();
+    p3();
     repaint();
 }
 
 void MyWidget::setSCXSliderValue(int) {
     Scx = SliderSCX->value() / (double) 50;
-    p2();
+    p3();
     repaint();
 }
 
 void MyWidget::setSCYSliderValue(int) {
     Scy = SliderSCY->value() / (double) 50;
-    p2();
+    p3();
     repaint();
 }
 
 void MyWidget::setObrotSliderValue(int) {
     alfa = SliderObrot->value() * 0.0174;
     //0,0174532925199 = Pi / 180
-    p2();
+    p3();
     repaint();
 }
 
 void MyWidget::setTranXSliderValue(int) {
     Tx = SliderTranX->value();
-    p2();
+    p3();
     repaint();
 }
 
 void MyWidget::setTranYSliderValue(int) {
     Ty = SliderTranY->value();
-    p2();
+    p3();
     repaint();
 }
 
 void MyWidget::paintEvent(QPaintEvent * e) {
-
     QPainter paint(this);
     paint.drawImage(QPoint(0, 0), *_imageDest);
     memset(_bitsDest, 255, _maxDest);
 }
 
-double* MyWidget::MatrixXVector(double **M, double *V) {
-    double *R = new double[3];
+void MyWidget::MatrixXVector(double **M, double *V) {
+    double *B = new double[3];
+    memcpy(B, V, sizeof (double) * 3);
+    memset(V, 0, sizeof (double) * 3);
     for (int i = 0; i < 3; i++) {
-        R[i] = 0;
         for (int j = 0; j < 3; j++) {
-            R[i] += M[i][j] * V[j];
+            V[i] += M[i][j] * B[j];
         }
     }
-    return R;
+    delete []B;
 }
 
-double** MyWidget::MatrixXMatix(double **A, double **B) {
-    double **W = new double*[3];
+double MyWidget::Det2x2(double **A, int i, int j) {
+
+    int x0 = 0, x1 = 1;
+    int y0 = 0, y1 = 1;
+
+    if (i == 0) {
+        x0++;
+        x1++;
+    } else if (i == 1) {
+        x1++;
+    }
+
+    if (j == 0) {
+        y0++;
+        y1++;
+    } else if (j == 1) {
+        y1++;
+    }
+
+    return A[x0][y0] * A[x1][y1] - A[x0][y1] * A[x1][y0];
+}
+
+void MyWidget::Matrix_1(double** R) {
+    double **B = new double*[3];
     for (int i = 0; i < 3; i++) {
-        W[i] = new double[3];
+        B[i] = new double[3];
+        memcpy(B[i], R[i], sizeof (double) * 3);
+    }
+
+    double detB =
+            B[0][0] * B[1][1] * B[2][2] +
+            B[1][0] * B[2][1] * B[0][2] +
+            B[2][0] * B[0][1] * B[1][2] -
+            B[1][0] * B[0][1] * B[2][2] -
+            B[0][0] * B[2][1] * B[1][2] -
+            B[2][0] * B[1][1] * B[0][2];
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            R[j][i] = Det2x2(B, i, j) / detB;
+        }
+    }
+    delete []B;
+}
+
+void MyWidget::MatrixXMatix(double **A, double **R) {
+    double **B = new double*[3];
+    for (int i = 0; i < 3; i++) {
+        B[i] = new double[3];
+        memcpy(B[i], R[i], sizeof (double) * 3);
+        memset(R[i], 0, sizeof (double) * 3);
     }
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            W[i][j] = 0;
             for (int k = 0; k < 3; k++) {
-                W[i][j] += A[i][k] * B[k][j];
+                R[i][j] += A[i][k] * B[k][j];
             }
         }
     }
-    return W;
+    delete []B;
 }
 
-void MyWidget::p2() {
+void MyWidget::p3() {
 
-    double **To = new double*[3];
     for (int i = 0; i < 3; i++) {
-        To[i] = new double[3];
-        memset(To[i], 0, sizeof (double) * 3);
-    }
-
-    To[0][0] = 1;
-    To[1][1] = 1;
-    To[2][2] = 1;
-    To[1][2] = 250;
-    To[0][2] = 250;
-
-    double **T_o = new double*[3];
-    for (int i = 0; i < 3; i++) {
-        T_o[i] = new double[3];
+        memset(M_1[i], 0, sizeof (double) * 3);
         memset(T_o[i], 0, sizeof (double) * 3);
+        memset(Tr[i], 0, sizeof (double) * 3);
+        memset(R[i], 0, sizeof (double) * 3);
+        memset(Sc[i], 0, sizeof (double) * 3);
+        memset(Sh[i], 0, sizeof (double) * 3);
     }
+
+    M_1[0][0] = 1;
+    M_1[1][1] = 1;
+    M_1[2][2] = 1;
+    M_1[0][2] = -150;
+    M_1[1][2] = 200;
 
     T_o[0][0] = 1;
     T_o[1][1] = 1;
     T_o[2][2] = 1;
     T_o[1][2] = -200;
-    T_o[0][2] = -150;
-
-    double **Tr = new double*[3];
-    for (int i = 0; i < 3; i++) {
-        Tr[i] = new double[3];
-        memset(Tr[i], 0, sizeof (double) * 3);
-    }
+    T_o[0][2] = 150;
 
     Tr[0][0] = 1;
     Tr[1][1] = 1;
     Tr[2][2] = 1;
     Tr[1][2] = Tx;
     Tr[0][2] = Ty;
-
-    double **R = new double*[3];
-    for (int i = 0; i < 3; i++) {
-        R[i] = new double[3];
-        memset(R[i], 0, sizeof (double) * 3);
-    }
+    Matrix_1(Tr);
 
     R[0][0] = cos(alfa);
     R[0][1] = -sin(alfa);
     R[1][0] = sin(alfa);
     R[1][1] = cos(alfa);
     R[2][2] = 1;
-
-    double **Sc = new double*[3];
-    for (int i = 0; i < 3; i++) {
-        Sc[i] = new double[3];
-        memset(Sc[i], 0, sizeof (double) * 3);
-    }
+    Matrix_1(R);
 
     Sc[0][0] = Scx;
     Sc[1][1] = Scy;
     Sc[2][2] = 1;
-
-    double **Sh = new double*[3];
-    for (int i = 0; i < 3; i++) {
-        Sh[i] = new double[3];
-        memset(Sh[i], 0, sizeof (double) * 3);
-    }
+    Matrix_1(Sc);
 
     Sh[0][0] = 1;
     Sh[1][1] = 1;
     Sh[2][2] = 1;
     Sh[0][1] = Shx;
     Sh[1][0] = Shy;
+    Matrix_1(Sh);
 
-    double **A;
-    A = MatrixXMatix(T_o, Sc);
-    A = MatrixXMatix(Sh, A);
-    A = MatrixXMatix(R, A);
-    A = MatrixXMatix(To, A);
-    A = MatrixXMatix(Tr, A);
+    MatrixXMatix(Tr, M_1);
+    MatrixXMatix(R, M_1);
+    MatrixXMatix(Sh, M_1);
+    MatrixXMatix(Sc, M_1);
+    MatrixXMatix(T_o, M_1);
+
 
     double *v = new double[3];
 
-    for (int i = 0; i < 300; i++) {
-        for (int j = 0; j < 400; j++) {
+    for (int i = 0; i < 500; i++) {
+        for (int j = 0; j < 500; j++) {
 
-            Point p = GetPixel(j, i);
-
-            v[0] = p.X;
-            v[1] = p.Y;
+            v[0] = i;
+            v[1] = j;
             v[2] = 1;
 
-            v = MatrixXVector(A, v);
+            MatrixXVector(M_1, v);
 
-            p.X = v[0];
-            p.Y = v[1];
+            Point p = GetPixel(v[0], v[1]);
 
-            SetPixel(p);
+            SetPixel(i + 0.5, j + 0.5, p.R, p.G, p.B);
         }
     }
 }
 
-void MyWidget::p() {
-
-    for (int i = 0; i < 300; i++) {
-        for (int j = 0; j < 400; j++) {
-
-            Point p = GetPixel(j, i);
-
-            p.X -= 200;
-            p.Y -= 150;
-
-            //R
-            double x = p.X * cos(alfa) - p.Y * sin(alfa);
-            double y = p.X * sin(alfa) + p.Y * cos(alfa);
-
-            p.X = x;
-            p.Y = y;
-
-            //Sc
-            p.X *= Scx;
-            p.Y *= Scy;
-
-            //Sh
-            x = p.Y * Shx;
-            y = p.X * Shy;
-
-            p.X += x;
-            p.Y += y;
-
-            p.X += 200;
-            p.Y += 150;
-
-            p.X += 50;
-            p.Y += 100;
-
-            p.X += Tx;
-            p.Y += Ty;
-
-            SetPixel(p);
-        }
-    }
-}
+//void MyWidget::p2() {
+//
+//    double **To = new double*[3];
+//    for (int i = 0; i < 3; i++) {
+//        To[i] = new double[3];
+//        memset(To[i], 0, sizeof (double) * 3);
+//    }
+//
+//    To[0][0] = 1;
+//    To[1][1] = 1;
+//    To[2][2] = 1;
+//    To[1][2] = 250;
+//    To[0][2] = 250;
+//
+//    double **T_o = new double*[3];
+//    for (int i = 0; i < 3; i++) {
+//        T_o[i] = new double[3];
+//        memset(T_o[i], 0, sizeof (double) * 3);
+//    }
+//
+//    T_o[0][0] = 1;
+//    T_o[1][1] = 1;
+//    T_o[2][2] = 1;
+//    T_o[1][2] = -200;
+//    T_o[0][2] = -150;
+//
+//    double **Tr = new double*[3];
+//    for (int i = 0; i < 3; i++) {
+//        Tr[i] = new double[3];
+//        memset(Tr[i], 0, sizeof (double) * 3);
+//    }
+//
+//    Tr[0][0] = 1;
+//    Tr[1][1] = 1;
+//    Tr[2][2] = 1;
+//    Tr[1][2] = Tx;
+//    Tr[0][2] = Ty;
+//
+//    double **R = new double*[3];
+//    for (int i = 0; i < 3; i++) {
+//        R[i] = new double[3];
+//        memset(R[i], 0, sizeof (double) * 3);
+//    }
+//
+//    R[0][0] = cos(alfa);
+//    R[0][1] = -sin(alfa);
+//    R[1][0] = sin(alfa);
+//    R[1][1] = cos(alfa);
+//    R[2][2] = 1;
+//
+//    double **Sc = new double*[3];
+//    for (int i = 0; i < 3; i++) {
+//        Sc[i] = new double[3];
+//        memset(Sc[i], 0, sizeof (double) * 3);
+//    }
+//
+//    Sc[0][0] = Scx;
+//    Sc[1][1] = Scy;
+//    Sc[2][2] = 1;
+//
+//    double **Sh = new double*[3];
+//    for (int i = 0; i < 3; i++) {
+//        Sh[i] = new double[3];
+//        memset(Sh[i], 0, sizeof (double) * 3);
+//    }
+//
+//    Sh[0][0] = 1;
+//    Sh[1][1] = 1;
+//    Sh[2][2] = 1;
+//    Sh[0][1] = Shx;
+//    Sh[1][0] = Shy;
+//
+//    double **A;
+//    A = MatrixXMatix(T_o, Sc);
+//    A = MatrixXMatix(Sh, A);
+//    A = MatrixXMatix(R, A);
+//    A = MatrixXMatix(To, A);
+//    A = MatrixXMatix(Tr, A);
+//
+//    double *v = new double[3];
+//
+//    for (int i = 0; i < 300; i++) {
+//        for (int j = 0; j < 400; j++) {
+//
+//            Point p = GetPixel(j, i);
+//
+//            v[0] = p.X;
+//            v[1] = p.Y;
+//            v[2] = 1;
+//
+//            v = MatrixXVector(A, v);
+//
+//            p.X = v[0];
+//            p.Y = v[1];
+//
+//            SetPixel(p);
+//        }
+//    }
+//}
+//
+//void MyWidget::p() {
+//
+//    for (int i = 0; i < 300; i++) {
+//        for (int j = 0; j < 400; j++) {
+//
+//            Point p = GetPixel(j, i);
+//
+//            p.X -= 200;
+//            p.Y -= 150;
+//
+//            //R
+//            double x = p.X * cos(alfa) - p.Y * sin(alfa);
+//            double y = p.X * sin(alfa) + p.Y * cos(alfa);
+//
+//            p.X = x;
+//            p.Y = y;
+//
+//            //Sc
+//            p.X *= Scx;
+//            p.Y *= Scy;
+//
+//            //Sh
+//            x = p.Y * Shx;
+//            y = p.X * Shy;
+//
+//            p.X += x;
+//            p.Y += y;
+//
+//            p.X += 200;
+//            p.Y += 150;
+//
+//            p.X += 50;
+//            p.Y += 100;
+//
+//            p.X += Tx;
+//            p.Y += Ty;
+//
+//            SetPixel(p);
+//        }
+//    }
+//}
 
 MyWidget::MyWidget(int Width, int Height, QWidget * parent) : QWidget(parent) {
 
@@ -330,4 +451,74 @@ MyWidget::MyWidget(int Width, int Height, QWidget * parent) : QWidget(parent) {
     connect(SliderTranX, SIGNAL(sliderMoved(int)), this, SLOT(setTranXSliderValue(int)));
     connect(SliderTranY, SIGNAL(sliderMoved(int)), this, SLOT(setTranYSliderValue(int)));
 
+    M_1 = new double*[3];
+    T_o = new double*[3];
+    Tr = new double*[3];
+    R = new double*[3];
+    Sc = new double*[3];
+    Sh = new double*[3];
+
+    for (int i = 0; i < 3; i++) {
+        M_1[i] = new double[3];
+        T_o[i] = new double[3];
+        Tr[i] = new double[3];
+        R[i] = new double[3];
+        Sc[i] = new double[3];
+        Sh[i] = new double[3];
+    }
+
+
+    //    double Tab[3][3];
+    //    To = Tab;
+    //
+    //    std::cout << Tab;
+    //
+    //    for (int i = 0; i < 3; i++) {
+    //        std::cout << Sh[i] << std::endl;
+    //        for (int j = 0; j < 3; j++) {
+    //            std::cout << Tab[i][j] << "\t";
+    //        }
+    //        std::cout << std::endl;
+    //    }
+    //
+    //    std::cout << "\n\n";
+    //    memset(Tab, 0, sizeof (double) * 9);
+    //    std::cout << sizeof (Sh);
+    //    for (int i = 0; i < 3; i++) {
+    //        for (int j = 0; j < 3; j++) {
+    //            std::cout << Tab[i][j] << "\t";
+    //        }
+    //        std::cout << std::endl;
+    //    }
+    //    std::cout << "\n\n";
+
+    //    double **Sh = new double*[3];
+    //    for (int i = 0; i < 3; i++) {
+    //        Sh[i] = new double[3];
+    //        memset(Sh[i], 0, sizeof (double) * 3);
+    //    }
+    //    Sh[0][0] = 2;
+    //    Sh[1][0] = 0;
+    //    Sh[2][0] = 0;
+    //
+    //    Sh[0][1] = 0;
+    //    Sh[1][1] = 4;
+    //    Sh[2][1] = 0;
+    //
+    //    Sh[0][2] = 0;
+    //    Sh[1][2] = 0;
+    //    Sh[2][2] = 8;
+    //
+    //    //Sh = Matrix_1(Sh);
+    //    std::cout << Det2x2(Sh, 0, 0);
+    //    std::cout << std::endl;
+    //
+    //    for (int i = 0; i < 3; i++) {
+    //        for (int j = 0; j < 3; j++) {
+    //            std::cout << Sh[i][j] << "\t";
+    //        }
+    //        std::cout << std::endl;
+    //    }
+
 }
+

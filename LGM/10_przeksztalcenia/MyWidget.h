@@ -50,6 +50,13 @@ private:
     double Shx, Shy;
     double alfa;
 
+    double **M_1;
+    double **T_o;
+    double **Tr;
+    double **R;
+    double **Sc;
+    double **Sh;
+
     long _maxSrc, _maxDest;
 
     QImage *_imageSrc, *_imageDest;
@@ -57,10 +64,15 @@ private:
 
     void p();
     void p2();
+    void p3();
+
+    double Det2x2(double **A, int i, int j);
+    void Matrix_1(double** R);
+    void MatrixXMatix(double **A, double **R);
+    void MatrixXVector(double **M, double *V);
+
 
     void paintEvent(QPaintEvent * e);
-    double** MatrixXMatix(double **A, double **B);
-    double* MatrixXVector(double **M, double *V);
 public:
     MyWidget(int Width, int Height, QWidget *parent = 0);
 
@@ -70,6 +82,15 @@ public:
             _bitsDest[b] = p.B;
             _bitsDest[b + 1] = p.G;
             _bitsDest[b + 2] = p.R;
+        }
+    }
+
+    void SetPixel(int x, int y, uchar R, uchar G, uchar B) {
+        int b = (500 * y + x) << 2;
+        if (b > -1 && b < _maxDest && x < 500 && x > 0) {
+            _bitsDest[b] = B;
+            _bitsDest[b + 1] = G;
+            _bitsDest[b + 2] = R;
         }
     }
 
