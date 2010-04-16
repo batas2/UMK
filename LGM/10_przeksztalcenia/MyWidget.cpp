@@ -160,26 +160,25 @@ void MyWidget::p3() {
     Tr[1][1] = 1;
     Tr[2][2] = 1;
     Tr[1][2] = Tx;
-    Tr[0][2] = Ty;
-    Matrix_1(Tr);
+    Tr[0][2] = -Ty;
 
     R[0][0] = cos(alfa);
     R[0][1] = -sin(alfa);
     R[1][0] = sin(alfa);
     R[1][1] = cos(alfa);
     R[2][2] = 1;
-    Matrix_1(R);
 
     Sc[0][0] = Scx;
     Sc[1][1] = Scy;
     Sc[2][2] = 1;
-    Matrix_1(Sc);
 
     Sh[0][0] = 1;
     Sh[1][1] = 1;
     Sh[2][2] = 1;
     Sh[0][1] = Shx;
     Sh[1][0] = Shy;
+
+    Matrix_1(Sc);
     Matrix_1(Sh);
 
     MatrixXMatix(Tr, M_1);
@@ -187,7 +186,6 @@ void MyWidget::p3() {
     MatrixXMatix(Sh, M_1);
     MatrixXMatix(Sc, M_1);
     MatrixXMatix(T_o, M_1);
-
 
     double *v = new double[3];
 
@@ -467,7 +465,7 @@ MyWidget::MyWidget(int Width, int Height, QWidget * parent) : QWidget(parent) {
         Sh[i] = new double[3];
     }
 
-
+    //p3();
     //    double Tab[3][3];
     //    To = Tab;
     //

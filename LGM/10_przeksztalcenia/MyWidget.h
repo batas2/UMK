@@ -97,7 +97,7 @@ public:
     Point GetPixel(int x, int y) {
         int b = (400 * y + x) << 2;
 
-        if (b > -1 && b < _maxSrc) {
+        if (b > -1 && b < _maxSrc && x < 400 && x > 0) {
             return Point(x, y, _bitsSrc[b + 2], _bitsSrc[b + 1], _bitsSrc[b]);
         }
         return Point();
