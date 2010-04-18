@@ -223,8 +223,9 @@ void MyWidget::p3() {
 
             int x, y;
             func[_func_index](v[0], v[1], &x, &y);
-            
-            SetPixel(GetPixel(x, y));
+            Point p = GetPixel(x, y);
+
+            SetPixel(i, j, p.R, p.G, p.B);
         }
     }
 }
