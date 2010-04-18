@@ -86,7 +86,7 @@ void MyWidget::MatrixXVector(double **M, double *V) {
     double *B = new double[3];
     memcpy(B, V, sizeof (double) * 3);
     memset(V, 0, sizeof (double) * 3);
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 3; j++) {
             V[i] += M[i][j] * B[j];
         }
@@ -218,8 +218,26 @@ void MyWidget::p3() {
             v[0] = i;
             v[1] = j;
             v[2] = 1;
-
+//            std::cout << "Macierz:" << std::endl;
+//            for (int a = 0; a < 3; a++) {
+//                for (int b = 0; b < 3; b++) {
+//                    std::cout << M_1[a][b] << "\t";
+//                }
+//                std::cout << std::endl;
+//            }
+//            std::cout << "\n";
+//
+//            std::cout << "wektor przed:" << std::endl;
+//            for (int a = 0; a < 3; a++) {
+//                std::cout << v[a] << "\t";
+//            }
+//            std::cout << "\n\n";
+//            std::cout << "wektor po:" << std::endl;
             MatrixXVector(M_1, v);
+//            for (int a = 0; a < 3; a++) {
+//                std::cout << v[a] << "\t";
+//            }
+//            std::cout << "\n\n\n";
 
             int x, y;
             func[_func_index](v[0], v[1], &x, &y);
@@ -505,7 +523,7 @@ MyWidget::MyWidget(int Width, int Height, QWidget * parent) : QWidget(parent) {
     func[2] = Interpolation;
     _func_index = 0;
 
-    //p3();
+    p3();
     //    double Tab[3][3];
     //    To = Tab;
     //
