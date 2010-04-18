@@ -10,18 +10,18 @@
 #include <math.h>
 #include <iostream>
 
-Point(*func[3])(double x, double y, uchar R, uchar G, uchar B);
+Point(*func[3])(double x, double y);
 
-Point Interpolation(double x, double y, uchar R, uchar G, uchar B) {
-    return Point(x + 0.5, y + 0.5, R, G, B);
+Point Interpolation(double x, double y) {
+    return Point(x + 0.5, y + 0.5);
 }
 
-Point Round(double x, double y, uchar R, uchar G, uchar B) {
-    return Point(x + 0.5, y + 0.5, R, G, B);
+Point Round(double x, double y) {
+    return Point(x + 0.5, y + 0.5);
 }
 
-Point Cut(double x, double y, uchar R, uchar G, uchar B) {
-    return Point(x, y, R, G, B);
+Point Cut(double x, double y) {
+    return Point(x, y);
 }
 
 void MyWidget::setComboValue(int v) {
@@ -179,8 +179,8 @@ void MyWidget::p3() {
     Tr[0][0] = 1;
     Tr[1][1] = 1;
     Tr[2][2] = 1;
-    Tr[1][2] = Tx;
-    Tr[0][2] = -Ty;
+    Tr[1][2] = Ty;
+    Tr[0][2] = -Tx;
 
     R[0][0] = cos(alfa);
     R[0][1] = -sin(alfa);
@@ -218,9 +218,9 @@ void MyWidget::p3() {
 
             MatrixXVector(M_1, v);
 
-            Point p = GetPixel(v[0], v[1]);
+            Point p = GetPixel(func[_func_index](v[0], v[1]));
 
-            SetPixel(func[_func_index](i, j, p.R, p.G, p.B));
+            SetPixel(p);
         }
     }
 }
@@ -402,11 +402,11 @@ MyWidget::MyWidget(int Width, int Height, QWidget * parent) : QWidget(parent) {
 
     SliderSHY = new QSlider(grpSH);
     SliderSHY->setGeometry(QRect(5, 80, 290, 23));
-    SliderSHY->setRange(-100, 100);
+    SliderSHY->setRange(-200, 200);
     SliderSHY->setOrientation(Qt::Horizontal);
     SliderSHX = new QSlider(grpSH);
     SliderSHX->setGeometry(QRect(5, 40, 290, 23));
-    SliderSHX->setRange(-100, 100);
+    SliderSHX->setRange(-200, 200);
     SliderSHX->setOrientation(Qt::Horizontal);
     lblSHX = new QLabel(grpSH);
     lblSHX->setGeometry(QRect(10, 25, 280, 16));
@@ -415,11 +415,11 @@ MyWidget::MyWidget(int Width, int Height, QWidget * parent) : QWidget(parent) {
 
     SliderSCX = new QSlider(grpSC);
     SliderSCX->setGeometry(QRect(5, 40, 290, 23));
-    SliderSCX->setRange(-100, 100);
+    SliderSCX->setRange(-200, 200);
     SliderSCX->setOrientation(Qt::Horizontal);
     SliderSCY = new QSlider(grpSC);
     SliderSCY->setGeometry(QRect(5, 80, 290, 23));
-    SliderSCY->setRange(-100, 100);
+    SliderSCY->setRange(-200, 200);
     SliderSCY->setOrientation(Qt::Horizontal);
     lblSCX = new QLabel(grpSC);
     lblSCX->setGeometry(QRect(10, 25, 280, 15));
@@ -435,11 +435,11 @@ MyWidget::MyWidget(int Width, int Height, QWidget * parent) : QWidget(parent) {
 
     SliderTranX = new QSlider(grpTran);
     SliderTranX->setGeometry(QRect(5, 40, 290, 23));
-    SliderTranX->setRange(-100, 100);
+    SliderTranX->setRange(-200, 200);
     SliderTranX->setOrientation(Qt::Horizontal);
     SliderTranY = new QSlider(grpTran);
     SliderTranY->setGeometry(QRect(5, 80, 290, 23));
-    SliderTranY->setRange(-100, 100);
+    SliderTranY->setRange(-200, 200);
     SliderTranY->setOrientation(Qt::Horizontal);
     lblTranX = new QLabel(grpTran);
     lblTranX->setGeometry(QRect(10, 25, 280, 15));
