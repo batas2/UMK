@@ -108,15 +108,6 @@ public:
         return Point();
     }
 
-    Point GetPixel(Point p) {
-        int b = (400 * p.Y + p.X) << 2;
-
-        if (b > -1 && b < _maxSrc && p.X < 400 && p.X > 0) {
-            return Point(x, y, _bitsSrc[b + 2], _bitsSrc[b + 1], _bitsSrc[b]);
-        }
-        return Point();
-    }
-
 public slots:
     void setSHXSliderValue(int);
     void setSHYSliderValue(int);

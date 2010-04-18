@@ -10,18 +10,21 @@
 #include <math.h>
 #include <iostream>
 
-Point(*func[3])(double x, double y);
+void (*func[3])(double x, double y, int *X, int *Y);
 
-Point Interpolation(double x, double y) {
-    return Point(x + 0.5, y + 0.5);
+void Interpolation(double x, double y, int *X, int *Y) {
+    *X = x + 0.5;
+    *Y = y + 0.5;
 }
 
-Point Round(double x, double y) {
-    return Point(x + 0.5, y + 0.5);
+void Round(double x, double y, int *X, int *Y) {
+    *X = x + 0.5;
+    *Y = y + 0.5;
 }
 
-Point Cut(double x, double y) {
-    return Point(x, y);
+void Cut(double x, double y, int *X, int *Y) {
+    *X = x;
+    *Y = y;
 }
 
 void MyWidget::setComboValue(int v) {
@@ -218,9 +221,10 @@ void MyWidget::p3() {
 
             MatrixXVector(M_1, v);
 
-            Point p = GetPixel(func[_func_index](v[0], v[1]));
-
-            SetPixel(p);
+            int x, y;
+            func[_func_index](v[0], v[1], &x, &y);
+            
+            SetPixel(GetPixel(x, y));
         }
     }
 }
