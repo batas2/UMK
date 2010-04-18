@@ -10,6 +10,26 @@
 #include <math.h>
 #include <iostream>
 
+Point(*func[3])(double x, double y, uchar R, uchar G, uchar B);
+
+Point Interpolation(double x, double y, uchar R, uchar G, uchar B) {
+    return Point(x + 0.5, y + 0.5, R, G, B);
+}
+
+Point Round(double x, double y, uchar R, uchar G, uchar B) {
+    return Point(x + 0.5, y + 0.5, R, G, B);
+}
+
+Point Cut(double x, double y, uchar R, uchar G, uchar B) {
+    return Point(x, y, R, G, B);
+}
+
+void MyWidget::setComboValue(int v) {
+    _func_index = v;
+    p3();
+    repaint();
+}
+
 void MyWidget::setSHXSliderValue(int) {
     Shx = SliderSHX->value() / (double) 50;
     p3();
@@ -200,7 +220,7 @@ void MyWidget::p3() {
 
             Point p = GetPixel(v[0], v[1]);
 
-            SetPixel(i + 0.5, j + 0.5, p.R, p.G, p.B);
+            SetPixel(func[_func_index](i, j, p.R, p.G, p.B));
         }
     }
 }
@@ -377,6 +397,8 @@ MyWidget::MyWidget(int Width, int Height, QWidget * parent) : QWidget(parent) {
     grpObrot->setGeometry(QRect(0, 25, 300, 80));
     grpTran = new QGroupBox(grpMain);
     grpTran->setGeometry(QRect(0, 340, 300, 110));
+    grpMode = new QGroupBox(grpMain);
+    grpMode->setGeometry(QRect(0, 440, 300, 80));
 
     SliderSHY = new QSlider(grpSH);
     SliderSHY->setGeometry(QRect(5, 80, 290, 23));
@@ -424,6 +446,13 @@ MyWidget::MyWidget(int Width, int Height, QWidget * parent) : QWidget(parent) {
     lblTranY = new QLabel(grpTran);
     lblTranY->setGeometry(QRect(10, 65, 280, 15));
 
+    _comboBox = new QComboBox(grpMode);
+    _comboBox->setGeometry(QRect(10, 25, 280, 25));
+    _comboBox->insertItems(0, QStringList()
+            << "Odcinanie"
+            << "Zaokraglanie"
+            << "Interpolacja");
+
     grpMain->setTitle("Przeksztalcenia");
     grpSH->setTitle("SH");
     grpObrot->setTitle("Obot");
@@ -448,6 +477,7 @@ MyWidget::MyWidget(int Width, int Height, QWidget * parent) : QWidget(parent) {
     connect(SliderSHY, SIGNAL(sliderMoved(int)), this, SLOT(setSHYSliderValue(int)));
     connect(SliderTranX, SIGNAL(sliderMoved(int)), this, SLOT(setTranXSliderValue(int)));
     connect(SliderTranY, SIGNAL(sliderMoved(int)), this, SLOT(setTranYSliderValue(int)));
+    connect(_comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setComboValue(int)));
 
     M_1 = new double*[3];
     T_o = new double*[3];
@@ -464,6 +494,11 @@ MyWidget::MyWidget(int Width, int Height, QWidget * parent) : QWidget(parent) {
         Sc[i] = new double[3];
         Sh[i] = new double[3];
     }
+
+    func[0] = Cut;
+    func[1] = Round;
+    func[2] = Interpolation;
+    _func_index = 0;
 
     //p3();
     //    double Tab[3][3];

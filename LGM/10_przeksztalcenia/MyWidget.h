@@ -8,6 +8,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QWidget>
 #include <QtGui/QPainter>
+#include <QtGui/QComboBox>
 #include <QtGui/QColor>
 #include <QtGui/QLabel>
 #include <QtGui/QSlider>
@@ -26,6 +27,7 @@ private:
     QGroupBox *grpSC;
     QGroupBox *grpObrot;
     QGroupBox *grpTran;
+    QGroupBox *grpMode;
 
     QSlider *SliderSHY;
     QSlider *SliderSHX;
@@ -45,6 +47,8 @@ private:
     QLabel *lblTranX;
     QLabel *lblTranY;
 
+    QComboBox *_comboBox;
+
     double Tx, Ty;
     double Scx, Scy;
     double Shx, Shy;
@@ -57,6 +61,7 @@ private:
     double **Sc;
     double **Sh;
 
+    int _func_index;
     long _maxSrc, _maxDest;
 
     QImage *_imageSrc, *_imageDest;
@@ -114,6 +119,8 @@ public slots:
 
     void setTranXSliderValue(int);
     void setTranYSliderValue(int);
+
+    void setComboValue(int);
 
 };
 
