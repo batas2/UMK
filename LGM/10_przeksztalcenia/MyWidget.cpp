@@ -215,32 +215,11 @@ void MyWidget::p3() {
     for (int i = 0; i < 500; i++) {
         for (int j = 0; j < 500; j++) {
 
-            v[0] = i;
-            v[1] = j;
-            v[2] = 1;
-//            std::cout << "Macierz:" << std::endl;
-//            for (int a = 0; a < 3; a++) {
-//                for (int b = 0; b < 3; b++) {
-//                    std::cout << M_1[a][b] << "\t";
-//                }
-//                std::cout << std::endl;
-//            }
-//            std::cout << "\n";
-//
-//            std::cout << "wektor przed:" << std::endl;
-//            for (int a = 0; a < 3; a++) {
-//                std::cout << v[a] << "\t";
-//            }
-//            std::cout << "\n\n";
-//            std::cout << "wektor po:" << std::endl;
-            MatrixXVector(M_1, v);
-//            for (int a = 0; a < 3; a++) {
-//                std::cout << v[a] << "\t";
-//            }
-//            std::cout << "\n\n\n";
+            double x = M_1[0][0] * i + M_1[0][1] * j + M_1[0][2];
+            double y = M_1[1][0] * i + M_1[1][1] * j + M_1[1][2];
 
-            int x, y;
-            func[_func_index](v[0], v[1], &x, &y);
+            int X, Y;
+            func[_func_index](x, y, &X, &Y);
             Point p = GetPixel(x, y);
 
             SetPixel(i, j, p.R, p.G, p.B);
@@ -524,6 +503,20 @@ MyWidget::MyWidget(int Width, int Height, QWidget * parent) : QWidget(parent) {
     _func_index = 0;
 
     p3();
+
+    for (int i = 0; i < 300; i++) {
+        //for (int j = 0; j < 400; j++) {
+            AC[i] = 400 * i;
+        //}
+    }
+
+    for (int i = 0; i < 500; i++) {
+        //for (int j = 0; j < 500; j++) {
+            BC[i] = 500 * i;
+        //}
+    }
+
+
     //    double Tab[3][3];
     //    To = Tab;
     //
