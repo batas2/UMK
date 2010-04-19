@@ -3,7 +3,7 @@
  * Author: batas2
  *
  * Created on 2 kwiecień 2010, 18:04
- */
+ */    
 
 #include <QtGui/QApplication>
 #include <QtGui/QWidget>
