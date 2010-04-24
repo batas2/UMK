@@ -3,7 +3,7 @@
  * Author: batas2
  *
  * Created on 2 kwiecień 2010, 18:04
- */   
+ */
 
 #include "MyWidget.h"
 #include <stdio.h>
@@ -209,8 +209,6 @@ void MyWidget::p3() {
     MatrixXMatix(Sh, M_1);
     MatrixXMatix(Sc, M_1);
     MatrixXMatix(T_o, M_1);
-
-    double *v = new double[3];
 
     for (int i = 0; i < 500; i++) {
         for (int j = 0; j < 500; j++) {
@@ -501,22 +499,6 @@ MyWidget::MyWidget(int Width, int Height, QWidget * parent) : QWidget(parent) {
     func[1] = Round;
     func[2] = Interpolation;
     _func_index = 0;
-
-    p3();
-
-    for (int i = 0; i < 300; i++) {
-        //for (int j = 0; j < 400; j++) {
-            AC[i] = 400 * i;
-        //}
-    }
-
-    for (int i = 0; i < 500; i++) {
-        //for (int j = 0; j < 500; j++) {
-            BC[i] = 500 * i;
-        //}
-    }
-
-
     //    double Tab[3][3];
     //    To = Tab;
     //
