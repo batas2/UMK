@@ -1,6 +1,6 @@
 /* 
  * File:   Point.cpp
- * Author: batas2
+ * Author: batas2, http://www.batas2.boo.pl/
  * 
  * Created on 7 kwiecień 2010, 13:24
  */

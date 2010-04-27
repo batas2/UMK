@@ -1,3 +1,9 @@
+/*
+ * File:   Point.h
+ * Author: batas2, http://www.batas2.boo.pl/
+ *
+ * Created on 7 kwiecień 2010, 13:24
+ */
 
 #include "MyWidget.h"
 
