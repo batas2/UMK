@@ -1,3 +1,9 @@
+/*
+ * File:   main.cpp
+ * Author: batas2, http://www.batas2.boo.pl/
+ *
+ * Created on 2 kwiecień 2010, 18:04
+ */
 
 #include "MyWidget.h"
 

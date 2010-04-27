@@ -1,6 +1,6 @@
 /*
  * File:   MyWidget.cpp
- * Author: batas2
+ * Author: batas2, http://www.batas2.boo.pl/
  *
  * Created on 2 kwiecień 2010, 18:04
  */
@@ -280,7 +280,6 @@ MyWidget::MyWidget(int Width, int Height, QWidget * parent) : QWidget(parent) {
 
     alfa = 0;
 
-    //Skalowanie
     Scx = 1;
     Scy = 1;
 
