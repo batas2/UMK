@@ -3,7 +3,7 @@
  * Author: batas2
  *
  * Created on 2 kwiecień 2010, 18:04
- */    
+ */
 
 #include <QtGui/QApplication>
 #include <QtGui/QWidget>
@@ -27,7 +27,6 @@ private:
     QGroupBox *grpSC;
     QGroupBox *grpObrot;
     QGroupBox *grpTran;
-    QGroupBox *grpMode;
 
     QSlider *SliderSHY;
     QSlider *SliderSHX;
@@ -47,47 +46,25 @@ private:
     QLabel *lblTranX;
     QLabel *lblTranY;
 
-    QComboBox *_comboBox;
-
     double Tx, Ty;
     double Scx, Scy;
     double Shx, Shy;
     double alfa;
 
-    double **M_1;
-    double **T_o;
-    double **Tr;
-    double **R;
-    double **Sc;
-    double **Sh;
-
-    int _func_index;
     long _maxSrc, _maxDest;
 
-    int AC[300];
-    int BC[500];
 
     QImage *_imageSrc, *_imageDest;
     uchar *_bitsSrc, *_bitsDest;
 
-    void p();
-    void p2();
-    void p3();
-
-    double Det2x2(double **A, int i, int j);
-    void Matrix_1(double** R);
-    void MatrixXMatix(double **A, double **R);
-    void MatrixXVector(double **M, double *V);
-
+    void Transform();
 
     void paintEvent(QPaintEvent * e);
 public:
     MyWidget(int Width, int Height, QWidget *parent = 0);
 
     void SetPixel(Point p) {
-        //int b = (BC[p.Y] + p.X) << 2;
         int b = (500 * p.Y + p.X) << 2;
-        //int b = BC[p.X][p.Y];
         if (b > -1 && b < _maxDest && p.X < 500 && p.X > 0) {
             _bitsDest[b] = p.B;
             _bitsDest[b + 1] = p.G;
@@ -95,21 +72,8 @@ public:
         }
     }
 
-    void SetPixel(int x, int y, uchar R, uchar G, uchar B) {
-        //int b = (BC[y] + x) << 2;
-        int b = (500 * y + x) << 2;
-        //int b = BC[x][y];
-        if (b > -1 && b < _maxDest && x < 500 && x > 0) {
-            _bitsDest[b] = B;
-            _bitsDest[b + 1] = G;
-            _bitsDest[b + 2] = R;
-        }
-    }
-
     Point GetPixel(int x, int y) {
-        //int b = (AC[y] + x) << 2;
         int b = (400 * y + x) << 2;
-        //int b = AC[x][y];
         if (b > -1 && b < _maxSrc && x < 400 && x > 0) {
             return Point(x, y, _bitsSrc[b + 2], _bitsSrc[b + 1], _bitsSrc[b]);
         }
@@ -127,8 +91,6 @@ public slots:
 
     void setTranXSliderValue(int);
     void setTranYSliderValue(int);
-
-    void setComboValue(int);
 
 };
 
