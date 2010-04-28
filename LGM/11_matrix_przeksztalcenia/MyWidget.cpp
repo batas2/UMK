@@ -18,40 +18,52 @@ void MyWidget::Interpolation(double x, double y, int *R, int *G, int *B) {
     int x0, y0, x1, y1;
     double dx, dy;
 
-    if (x < 400 && y < 300 && x > 0 && y > 0) {
-        x0 = x;
-        y0 = y;
-
-        x1 = x0 + 1;
-        y1 = y0 + 1;
-
-        dx = x - x0;
-        dy = y - y0;
-
-        *R = Inter(Inter(_bitsSrc[AC[y0][x0] + 2], _bitsSrc[AC[y1][x0] + 2], dx), Inter(_bitsSrc[AC[y0][x1] + 2], _bitsSrc[AC[y1][x1] + 2], dx), dy);
-        *G = Inter(Inter(_bitsSrc[AC[y0][x0] + 1], _bitsSrc[AC[y1][x0] + 1], dx), Inter(_bitsSrc[AC[y0][x1] + 1], _bitsSrc[AC[y1][x1] + 1], dx), dy);
-        *B = Inter(Inter(_bitsSrc[AC[y0][x0]], _bitsSrc[AC[y1][x0]], dx), Inter(_bitsSrc[AC[y0][x1]], _bitsSrc[AC[y1][x1]], dx), dy);
+    int a = x / 400;
+    if (x > a * 400) {
+        x = x - a * 400;
+    } else {
+        x = a * 400 - x;
     }
+
+    a = y / 300;
+    if (y > a * 300) {
+        y = y - a * 300;
+    } else {
+        y = a * 300 - y;
+    }
+
+    x0 = x;
+    y0 = y;
+
+    x1 = x0 + 1;
+    y1 = y0 + 1;
+
+    dx = x - x0;
+    dy = y - y0;
+
+    *R = Inter(Inter(_bitsSrc[AC[y0][x0] + 2], _bitsSrc[AC[y0][x1] + 2], dx), Inter(_bitsSrc[AC[y1][x0] + 2], _bitsSrc[AC[y1][x1] + 2], dx), dy);
+    *G = Inter(Inter(_bitsSrc[AC[y0][x0] + 1], _bitsSrc[AC[y0][x1] + 1], dx), Inter(_bitsSrc[AC[y1][x0] + 1], _bitsSrc[AC[y1][x1] + 1], dx), dy);
+    *B = Inter(Inter(_bitsSrc[AC[y0][x0]], _bitsSrc[AC[y0][x1]], dx), Inter(_bitsSrc[AC[y1][x0]], _bitsSrc[AC[y1][x1]], dx), dy);
 }
 
 void MyWidget::Round(double x, double y, int *R, int *G, int *B) {
     int X = (int) (x + 0.5);
     int Y = (int) (y + 0.5);
-    if (X < 400 && Y < 300 && X > 0 && Y > 0) {
-        *B = _bitsSrc[AC[Y][X]];
-        *G = _bitsSrc[AC[Y][X] + 1];
-        *R = _bitsSrc[AC[Y][X] + 2];
-    }
+    X = abs(X % 400);
+    Y = abs(Y % 300);
+    *B = _bitsSrc[AC[Y][X]];
+    *G = _bitsSrc[AC[Y][X] + 1];
+    *R = _bitsSrc[AC[Y][X] + 2];
 }
 
 void MyWidget::Cut(double x, double y, int *R, int *G, int *B) {
     int X = (int) (x);
     int Y = (int) (y);
-    if (X < 400 && Y < 300 && X > 0 && Y > 0) {
-        *B = _bitsSrc[AC[Y][X]];
-        *G = _bitsSrc[AC[Y][X] + 1];
-        *R = _bitsSrc[AC[Y][X] + 2];
-    }
+    X = abs(X % 400);
+    Y = abs(Y % 300);
+    *B = _bitsSrc[AC[Y][X]];
+    *G = _bitsSrc[AC[Y][X] + 1];
+    *R = _bitsSrc[AC[Y][X] + 2];
 }
 
 void MyWidget::setComboValue(int v) {
