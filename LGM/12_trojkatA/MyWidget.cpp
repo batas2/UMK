@@ -166,24 +166,27 @@ void MyWidget::Line(uchar *bits, QPoint &s, QPoint &t, uchar R, uchar G, uchar B
             SetPixel(bits, s.x(), y, R, G, B);
         }
     } else {
-        double a = (double) (t.y() - s.y()) / (double) (t.x() - s.x());
+        double a = (t.y() - s.y()) / (double) (t.x() - s.x());
         double b = -a * s.x() + s.y();
 
         if (a >= -1 && a <= 1) {
             int xMin = s.x() < t.x() ? s.x() : t.x();
             int xMax = s.x() < t.x() ? t.x() : s.x();
 
+            double y = a * xMin + b;
             for (int x = xMin; x < xMax; x++) {
-                double y = a * x + b;
                 SetPixel(bits, x, y, R, G, B);
+                y += a;
             }
         } else {
             int yMin = s.y() < t.y() ? s.y() : t.y();
             int yMax = s.y() < t.y() ? t.y() : s.y();
 
+            double x = (yMin - b) / a;
+            double a1 = 1 / a;
             for (int y = yMin; y < yMax; y++) {
-                double x = (y - b) / a;
                 SetPixel(bits, x, y, R, G, B);
+                x += a1;
             }
         }
     }
