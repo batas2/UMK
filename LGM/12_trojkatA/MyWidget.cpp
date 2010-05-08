@@ -36,6 +36,42 @@ void MyWidget::Interpolation(double x, double y, int *R, int *G, int *B) {
     }
 }
 
+//void MyWidget::TextureMap() {
+//
+//    int XMax = 0;
+//    int YMax = 0;
+//    int XMin = _PIC_X;
+//    int YMin = _PIC_Y;
+//    for (_it = _pointsDest->begin(); _it != _pointsDest->end(); _it++) {
+//        if (_it->x() > XMax) XMax = _it->x();
+//        if (_it->x() < XMin) XMin = _it->x();
+//        if (_it->y() > YMax) YMax = _it->y();
+//        if (_it->y() < YMin) YMin = _it->y();
+//    }
+//
+//    //        double a = (t.y() - s.y()) / (double) (t.x() - s.x());
+//    //        double b = -a * s.x() + s.y();
+//
+//    double aSrc = (_pointsSrc->at(1).y() - _pointsSrc->at(2).y()) / (double) (_pointsSrc->at(1).x() - _pointsSrc->at(2).x());
+//    double bSrc = -aSrc * _pointsSrc->at(1).x() + _pointsSrc->at(1).y();
+//
+//    if (_YMin >= 0 && _XMin >= 0 && _XMax < _PIC_X && _YMax < _PIC_Y) {
+//        for (int y = _YMin + 1; y < _YMax - 1; y++) {
+//            bool in = false;
+//            for (int x = _XMin; x < _XMax; x++) {
+//
+//                if (_bitsDest[AC[y][x] + 1] == 255 && _bitsDest[AC[y][x + 1] + 1] != 255) {
+//                    in = !in;
+//                }
+//
+//                if (in) {
+//
+//                }
+//            }
+//        }
+//    }
+//}
+
 void MyWidget::TextureMap() {
 
     _XMax = 0;
@@ -49,50 +85,96 @@ void MyWidget::TextureMap() {
         if (_it->y() < _YMin) _YMin = _it->y();
     }
 
-    double alSrc = 1 / ((_pointsSrc->at(0).y() - _pointsSrc->at(1).y()) / (double) (_pointsSrc->at(0).x() - _pointsSrc->at(1).x()));
-    double aRSrc = 1 / ((_pointsSrc->at(0).y() - _pointsSrc->at(2).y()) / (double) (_pointsSrc->at(0).x() - _pointsSrc->at(2).x()));
+    // double alSrc = (_pointsSrc->at(0).x() - _pointsSrc->at(1).x()) / (double) (_pointsSrc->at(0).y() - _pointsSrc->at(1).y());
 
-    double blSrc = (_pointsSrc->at(1).y() - _pointsSrc->at(0).y()) / (double) (_pointsDest->at(1).y() - _pointsDest->at(0).y());
-    double bRSrc = (_pointsSrc->at(2).y() - _pointsSrc->at(0).y()) / (double) (_pointsDest->at(2).y() - _pointsDest->at(0).y());
+    double sizeLSrc = _pointsSrc->at(0).y() - _pointsSrc->at(1).y();
+    double sizeRSrc = _pointsSrc->at(0).y() - _pointsSrc->at(2).y();
+    double sizeBSrc = _pointsSrc->at(1).y() - _pointsSrc->at(2).y();
 
-    double alDest = 1 / ((_pointsDest->at(0).y() - _pointsDest->at(1).y()) / (double) (_pointsDest->at(0).x() - _pointsDest->at(1).x()));
-    double aRDest = 1 / ((_pointsDest->at(0).y() - _pointsDest->at(2).y()) / (double) (_pointsDest->at(0).x() - _pointsDest->at(2).x()));
+    double sizeLDest = _pointsDest->at(0).y() - _pointsDest->at(1).y();
+    double sizeRDest = _pointsDest->at(0).y() - _pointsDest->at(2).y();
+    double sizeBDest = _pointsDest->at(1).y() - _pointsDest->at(2).y();
 
-    double xlSrc = _pointsSrc->at(0).x();
+    double aLSrc = (_pointsSrc->at(0).x() - _pointsSrc->at(1).x()) / sizeLSrc;
+    double aRSrc = (_pointsSrc->at(0).x() - _pointsSrc->at(2).x()) / sizeRSrc;
+    double aBSrc = (_pointsSrc->at(1).x() - _pointsSrc->at(2).x()) / sizeBSrc;
+
+    double aLDest = (_pointsDest->at(0).x() - _pointsDest->at(1).x()) / sizeLDest;
+    double aRDest = (_pointsDest->at(0).x() - _pointsDest->at(2).x()) / sizeRDest;
+    double aBDest = (_pointsDest->at(1).x() - _pointsDest->at(2).x()) / sizeBDest;
+
+    double aYSrc;
+
+    int ChangeYSrc;
+    int ChangeYDest;
+
+    if (abs(sizeLDest) > abs(sizeRDest)) {
+        aYSrc = sizeLDest / sizeLSrc;
+        ChangeYDest = _YMin + abs(sizeLDest);
+    } else {
+        aYSrc = sizeRDest / sizeRSrc;
+        ChangeYDest = _YMin + abs(sizeRDest);
+    }
+
+    if (abs(sizeLSrc) > abs(sizeRSrc)) {
+        ChangeYSrc = _YMin + abs(sizeLSrc);
+    } else {
+        ChangeYSrc = _YMin + abs(sizeRSrc);
+    }
+
+    aLSrc *= aYSrc;
+    aRSrc *= aYSrc;
+    aBSrc *= aYSrc;
+
+    double xLSrc = _pointsSrc->at(0).x();
     double xRSrc = _pointsSrc->at(0).x();
 
-    double ylSrc = _pointsSrc->at(0).y();
-    double yRSrc = _pointsSrc->at(0).y();
+    double ySrc = _pointsSrc->at(0).y();
 
-    double xlDest = _pointsDest->at(0).x();
+    double xLDest = _pointsDest->at(0).x();
     double xRDest = _pointsDest->at(0).x();
 
+    int R, G, B;
     if (_YMin >= 0 && _XMin >= 0 && _XMax < _PIC_X && _YMax < _PIC_Y) {
-        for (int y = _YMin + 1; y < _YMax - 1; y++) {
-            bool in = false;
-            double p = (xRSrc - xlSrc) / (double) (xRDest - xlDest);
-            double xSrc = xlSrc;
-            for (int x = _XMin; x < _XMax; x++) {
+        for (int y = _YMin; y < _YMax; y++) {
 
-                if (_bitsDest[AC[y][x] + 1] == 255 && _bitsDest[AC[y][x + 1] + 1] != 255) {
-                    in = !in;
-                }
+            double p = (xRSrc - xLSrc) / (double) (xRDest - xLDest);
+            double xSrc = xLSrc;
 
-                if (in) {
-                    int R, G, B;
-                    Interpolation(xSrc, ylSrc, &R, &G, &B);
-                    SetPixel(_bitsDest, x, y, R, G, B);
-                    xSrc += p;
+            for (int x = xLDest; x < xRDest; x++) {
+                Interpolation(xSrc, ySrc, &R, &G, &B);
+                SetPixel(_bitsSrc, xSrc, ySrc, 30);
+                SetPixel(_bitsDest, x, y, R, G, B);
+                xSrc += p;
+            }
+
+            ySrc += aYSrc;
+
+            if (y < ChangeYSrc) {
+                xLSrc += aLSrc;
+                xRSrc += aRSrc;
+            } else {
+                if (abs(sizeLDest) > abs(sizeRDest)) {
+                    xLSrc += aLSrc;
+                    xRSrc += aBSrc;
+                } else {
+                    xLSrc += aBSrc;
+                    xRSrc += aRSrc;
                 }
             }
-            xlSrc += alSrc;
-            xRSrc += aRSrc;
 
-            ylSrc += blSrc;
-            yRSrc += bRSrc;
-
-            xlDest += alDest;
-            xRDest += aRDest;
+            if (y < ChangeYDest) {
+                xLDest += aLDest;
+                xRDest += aRDest;
+            } else {
+                if (abs(sizeLDest) > abs(sizeRDest)) {
+                    xLDest += aLDest;
+                    xRDest += aBDest;
+                } else {
+                    xLDest += aBDest;
+                    xRDest += aRDest;
+                }
+            }
         }
     }
 }
@@ -130,7 +212,7 @@ void MyWidget::paintEvent(QPaintEvent * e) {
     paint.drawImage(QPoint(_PIC_X, 0), *_imageDest);
 }
 
-MyWidget::MyWidget(int Width, int Height, QWidget *parent) : QWidget(parent) {
+MyWidget::MyWidget(int Width, int Height, QWidget * parent) : QWidget(parent) {
     setFixedSize(Width, Height);
 
     _imagePic = new QImage("zuk.jpg");
@@ -202,7 +284,7 @@ void MyWidget::Line(uchar *bits, QPoint &s, QPoint &t, uchar R, uchar G, uchar B
     }
 }
 
-void MyWidget::mouseMoveEvent(QMouseEvent *e) {
+void MyWidget::mouseMoveEvent(QMouseEvent * e) {
     if (_move) {
         if (e->x() > _PIC_X) {
             _moveIt->setX(e->x() - _PIC_X);
@@ -214,7 +296,7 @@ void MyWidget::mouseMoveEvent(QMouseEvent *e) {
     }
 }
 
-void MyWidget::mousePressEvent(QMouseEvent *e) {
+void MyWidget::mousePressEvent(QMouseEvent * e) {
 
     int x = e->x();
     int y = e->y();
