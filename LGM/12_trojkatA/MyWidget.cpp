@@ -30,47 +30,11 @@ void MyWidget::Interpolation(double x, double y, int *R, int *G, int *B) {
         *G = Inter(Inter(_bitsPic[AC[y0][x0] + 1], _bitsPic[AC[y0][x1] + 1], dx), Inter(_bitsPic[AC[y1][x0] + 1], _bitsPic[AC[y1][x1] + 1], dx), dy);
         *B = Inter(Inter(_bitsPic[AC[y0][x0]], _bitsPic[AC[y0][x1]], dx), Inter(_bitsPic[AC[y1][x0]], _bitsPic[AC[y1][x1]], dx), dy);
     } else {
-        *R = 255;
-        *G = 255;
-        *B = 255;
+        *R = 0;
+        *G = 0;
+        *B = 0;
     }
 }
-
-//void MyWidget::TextureMap() {
-//
-//    int XMax = 0;
-//    int YMax = 0;
-//    int XMin = _PIC_X;
-//    int YMin = _PIC_Y;
-//    for (_it = _pointsDest->begin(); _it != _pointsDest->end(); _it++) {
-//        if (_it->x() > XMax) XMax = _it->x();
-//        if (_it->x() < XMin) XMin = _it->x();
-//        if (_it->y() > YMax) YMax = _it->y();
-//        if (_it->y() < YMin) YMin = _it->y();
-//    }
-//
-//    //        double a = (t.y() - s.y()) / (double) (t.x() - s.x());
-//    //        double b = -a * s.x() + s.y();
-//
-//    double aSrc = (_pointsSrc->at(1).y() - _pointsSrc->at(2).y()) / (double) (_pointsSrc->at(1).x() - _pointsSrc->at(2).x());
-//    double bSrc = -aSrc * _pointsSrc->at(1).x() + _pointsSrc->at(1).y();
-//
-//    if (_YMin >= 0 && _XMin >= 0 && _XMax < _PIC_X && _YMax < _PIC_Y) {
-//        for (int y = _YMin + 1; y < _YMax - 1; y++) {
-//            bool in = false;
-//            for (int x = _XMin; x < _XMax; x++) {
-//
-//                if (_bitsDest[AC[y][x] + 1] == 255 && _bitsDest[AC[y][x + 1] + 1] != 255) {
-//                    in = !in;
-//                }
-//
-//                if (in) {
-//
-//                }
-//            }
-//        }
-//    }
-//}
 
 void MyWidget::TextureMap() {
 
@@ -84,8 +48,6 @@ void MyWidget::TextureMap() {
         if (_it->y() > _YMax) _YMax = _it->y();
         if (_it->y() < _YMin) _YMin = _it->y();
     }
-
-    // double alSrc = (_pointsSrc->at(0).x() - _pointsSrc->at(1).x()) / (double) (_pointsSrc->at(0).y() - _pointsSrc->at(1).y());
 
     double sizeLSrc = _pointsSrc->at(0).y() - _pointsSrc->at(1).y();
     double sizeRSrc = _pointsSrc->at(0).y() - _pointsSrc->at(2).y();
@@ -109,17 +71,17 @@ void MyWidget::TextureMap() {
     int ChangeYDest;
 
     if (abs(sizeLDest) > abs(sizeRDest)) {
-        aYSrc = sizeLDest / sizeLSrc;
-        ChangeYDest = _YMin + abs(sizeLDest);
-    } else {
-        aYSrc = sizeRDest / sizeRSrc;
+        aYSrc = sizeLSrc / sizeLDest;
         ChangeYDest = _YMin + abs(sizeRDest);
+    } else {
+        aYSrc = sizeRSrc / sizeRDest;
+        ChangeYDest = _YMin + abs(sizeLDest);
     }
 
     if (abs(sizeLSrc) > abs(sizeRSrc)) {
-        ChangeYSrc = _YMin + abs(sizeLSrc);
-    } else {
         ChangeYSrc = _YMin + abs(sizeRSrc);
+    } else {
+        ChangeYSrc = _YMin + abs(sizeLSrc);
     }
 
     aLSrc *= aYSrc;
@@ -150,11 +112,11 @@ void MyWidget::TextureMap() {
 
             ySrc += aYSrc;
 
-            if (y < ChangeYSrc) {
+            if (ySrc < ChangeYSrc) {
                 xLSrc += aLSrc;
                 xRSrc += aRSrc;
             } else {
-                if (abs(sizeLDest) > abs(sizeRDest)) {
+                if (abs(sizeLSrc) > abs(sizeRSrc)) {
                     xLSrc += aLSrc;
                     xRSrc += aBSrc;
                 } else {
