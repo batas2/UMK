@@ -16,7 +16,7 @@ void MyWidget::Interpolation(double x, double y, int *R, int *G, int *B) {
     int x0, y0, x1, y1;
     double dx, dy;
 
-    if (x <= _PIC_X && x >= 0 && y >= 0 && y <= _PIC_Y) {
+    if (x < _PIC_X - 1 && x >= 0 && y >= 0 && y < _PIC_Y - 1) {
         x0 = x;
         y0 = y;
 
@@ -38,6 +38,17 @@ void MyWidget::Interpolation(double x, double y, int *R, int *G, int *B) {
 
 void MyWidget::TextureMap() {
 
+    _XMax = 0;
+    _YMax = 0;
+    _XMin = _PIC_X;
+    _YMin = _PIC_Y;
+    for (_it = _pointsDest->begin(); _it != _pointsDest->end(); _it++) {
+        if (_it->x() > _XMax) _XMax = _it->x();
+        if (_it->x() < _XMin) _XMin = _it->x();
+        if (_it->y() > _YMax) _YMax = _it->y();
+        if (_it->y() < _YMin) _YMin = _it->y();
+    }
+
     double alSrc = 1 / ((_pointsSrc->at(0).y() - _pointsSrc->at(1).y()) / (double) (_pointsSrc->at(0).x() - _pointsSrc->at(1).x()));
     double aRSrc = 1 / ((_pointsSrc->at(0).y() - _pointsSrc->at(2).y()) / (double) (_pointsSrc->at(0).x() - _pointsSrc->at(2).x()));
 
@@ -56,31 +67,33 @@ void MyWidget::TextureMap() {
     double xlDest = _pointsDest->at(0).x();
     double xRDest = _pointsDest->at(0).x();
 
-    for (int y = _YMin + 1; y < _YMax - 1; y++) {
-        bool in = false;
-        double p = (xRSrc - xlSrc) / (double) (xRDest - xlDest);
-        double xSrc = xlSrc;
-        for (int x = _XMin; x < _XMax; x++) {
+    if (_YMin >= 0 && _XMin >= 0 && _XMax < _PIC_X && _YMax < _PIC_Y) {
+        for (int y = _YMin + 1; y < _YMax - 1; y++) {
+            bool in = false;
+            double p = (xRSrc - xlSrc) / (double) (xRDest - xlDest);
+            double xSrc = xlSrc;
+            for (int x = _XMin; x < _XMax; x++) {
 
-            if (_bitsDest[AC[y][x] + 1] == 255 && _bitsDest[AC[y][x + 1] + 1] != 255) {
-                in = !in;
-            }
+                if (_bitsDest[AC[y][x] + 1] == 255 && _bitsDest[AC[y][x + 1] + 1] != 255) {
+                    in = !in;
+                }
 
-            if (in) {
-                int R, G, B;
-                Interpolation(xSrc, ylSrc, &R, &G, &B);
-                SetPixel(_bitsDest, x, y, R, G, B);
-                xSrc += p;
+                if (in) {
+                    int R, G, B;
+                    Interpolation(xSrc, ylSrc, &R, &G, &B);
+                    SetPixel(_bitsDest, x, y, R, G, B);
+                    xSrc += p;
+                }
             }
+            xlSrc += alSrc;
+            xRSrc += aRSrc;
+
+            ylSrc += blSrc;
+            yRSrc += bRSrc;
+
+            xlDest += alDest;
+            xRDest += aRDest;
         }
-        xlSrc += alSrc;
-        xRSrc += aRSrc;
-
-        ylSrc += blSrc;
-        yRSrc += bRSrc;
-
-        xlDest += alDest;
-        xRDest += aRDest;
     }
 }
 
@@ -134,10 +147,7 @@ MyWidget::MyWidget(int Width, int Height, QWidget *parent) : QWidget(parent) {
     _pointsSrc = new vector<QPoint > ();
 
     _point_size = 3;
-    _XMax = 0;
-    _YMax = 0;
-    _XMin = _PIC_X;
-    _YMin = _PIC_Y;
+
 
     memcpy(_bitsSrc, _imagePic->bits(), _PIC_MAX);
     memset(_bitsDest, 0, _PIC_MAX);
@@ -196,10 +206,6 @@ void MyWidget::mouseMoveEvent(QMouseEvent *e) {
     if (_move) {
         if (e->x() > _PIC_X) {
             _moveIt->setX(e->x() - _PIC_X);
-            if (e->x() - _PIC_X > _XMax) _XMax = e->x() - _PIC_X;
-            if (e->x() - _PIC_X < _XMin) _XMin = e->x() - _PIC_X;
-            if (e->y() > _YMax) _YMax = e->y();
-            if (e->y() < _YMin) _YMin = e->y();
         } else {
             _moveIt->setX(e->x());
         }
@@ -235,12 +241,6 @@ void MyWidget::mousePressEvent(QMouseEvent *e) {
     }
 
     if (!_move) {
-        if (e->x() > _PIC_X) {
-            if (e->x() - _PIC_X > _XMax) _XMax = e->x() - _PIC_X;
-            if (e->x() - _PIC_X < _XMin) _XMin = e->x() - _PIC_X;
-            if (e->y() > _YMax) _YMax = e->y();
-            if (e->y() < _YMin) _YMin = e->y();
-        }
         if (e->x() / _PIC_X == 0 && _pointsSrc->size() < 3) {
             _pointsSrc->push_back(QPoint(e->x(), e->y()));
         } else if (e->x() / _PIC_X == 1 && _pointsDest->size() < 3) {
