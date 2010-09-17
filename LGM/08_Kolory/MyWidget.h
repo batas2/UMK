@@ -56,26 +56,14 @@ private:
     QLabel *lblV;
     QSlider *SliderV;
 
-    QLabel *lblL;
-    QSlider *SliderL;
-    QLabel *lbla;
-    QSlider *Slidera;
-    QLabel *lblb;
-    QSlider *Sliderb;
-
-    double* MatrixXVector(const double M[3][3], double V[3]);
-
 public:
     MyWidget(int Width, int Height, QWidget *parent = 0);
 
     void paintEvent(QPaintEvent * e);
 
-    void Lab2RGB(int L, int a, int b, int *R, int *G, int *B);
-
     void RGB(int v, int n);
     void HSV(int v, int n);
     void CMYK(int v, int k, int n);
-    void Lab(int v, int n);
 
 public slots:
     void setRSliderValue(int);
@@ -88,9 +76,6 @@ public slots:
     void setMSliderValue(int);
     void setYSliderValue(int);
     void setKSliderValue(int);
-    void setLSliderValue(int);
-    void setaSliderValue(int);
-    void setbSliderValue(int);
 };
 
 #endif	/* _MYWIDGET_H */

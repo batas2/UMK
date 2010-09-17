@@ -1,5 +1,6 @@
 package assertions;
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -19,7 +20,7 @@ public class Main {
         } else if (v % 3 == 1) {
             System.out.println("Reszta z dzielnia: 1");
         } else {
-            assert v % 3 == 2 : v;
+            assert v % 4 == 2 : v;
             System.out.println("Reszta z dzielnia: 2");
         }
     }
@@ -60,8 +61,8 @@ public class Main {
             default:
                 throw new AssertionError(car);
         }
-    }
 
+    }
     static void assertionFlow() {
         int[] b = {1, 2, 3, 4, 5, -1};
         for (int i = 0; i < b.length; i++) {
@@ -76,7 +77,6 @@ public class Main {
     }
 
     static void assertionArray(final int[] array) {
-
         // Inner class that saves state and performs final consistency check
         class DataCopy {
 
@@ -92,7 +92,6 @@ public class Main {
         }
 
         DataCopy copy = null;
-
         // Always succeeds; has side effect of saving a copy of array
         assert ((copy = new DataCopy()) != null);
 
@@ -115,13 +114,46 @@ public class Main {
     public static void main(String[] args) {
 
 //        assert Expression1 ;
-//        assert Expression1 : Expression2 ;
+        //    assert Expression1 : Expression2 ;
+        //assert false : "blad";
+        //asserionIf(5);
+//        assertionSwitchA(CarType.Hatchback);
+//        assertionSwitchB(CarType.Sedan);
+//        assertionFlow();
+//        assertionArray(new int[]{5, 4, 2, 4});
+//        assertionParameters(5, 8);
 
-        asserionIf(5);
-        assertionSwitchA(CarType.Hatchback);
-        assertionSwitchB(CarType.Sedan);
-        assertionFlow();
-        assertionArray(new int[]{5, 4, 2, 4});
-        assertionParameters(5, 8);
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String line = new String();
+        int n = 0;
+        try {
+            line = in.readLine();
+            n = Integer.parseInt(line);
+        } catch (IOException e) {
+            System.out.print(e);
+        }
+
+        if (n == 0) {
+            throw new RuntimeException();
+        }
+
+        Integer[] tab = new Integer[n];
+
+        try {
+            for (int i = 0; i < n; i++) {
+                line = in.readLine();
+                int v = Integer.parseInt(line);
+                tab[i] = v;
+            }
+
+        } catch (IOException e) {
+            System.out.print(e);
+        }
+
+        Arrays.sort(tab, Collections.reverseOrder());
+
+        assert tab[2] < tab[3] : "nie ma";
+
     }
 }

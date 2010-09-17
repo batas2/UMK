@@ -56,9 +56,42 @@ public class Main {
         }
     }
 
+    public static void Litery(char v) {
+
+        BufferedReader in = null;
+        try {
+            in = new BufferedReader(new InputStreamReader(new FileInputStream("/home/batas2/plik.txt")));
+        } catch (FileNotFoundException ex) {
+            System.out.print(ex);
+        }
+
+        String str = new String();
+        int c = 0;
+
+        try {
+            if (in != null) {
+                while ((str = in.readLine()) != null) {
+                    for (int i = 0; i < str.length(); i++) {
+                        if (str.charAt(i) == v) {
+                            c++;
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.print(e);
+        }
+        System.out.print(c);
+    }
+
     public static void main(String[] args) {
-        Iniclay();
-        Konkatenacja();
-        Anagram();
+        //wystapienia litery w pliku
+        //listuje zawartosc katalogu
+        // Iniclay();
+        // Konkatenacja();
+        // Anagram();
+        Litery('q');
+        DirListing d = new DirListing("/home/batas2/UMK/Java");
+        d.List();
     }
 }

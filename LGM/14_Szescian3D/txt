@@ -1,0 +1,137 @@
+    //    Line(_bitsDest, QPoint(Cube2D[0][0][0](X), Cube2D[0][0][0](Y)), QPoint(Cube2D[1][0][0](X), Cube2D[1][0][0](Y)), 255);
+    //    Line(_bitsDest, QPoint(Cube2D[0][0][0](X), Cube2D[0][0][0](Y)), QPoint(Cube2D[0][1][0](X), Cube2D[0][1][0](Y)), 255);
+    //    Line(_bitsDest, QPoint(Cube2D[0][0][0](X), Cube2D[0][0][0](Y)), QPoint(Cube2D[0][0][1](X), Cube2D[0][0][1](Y)), 255);
+    //    Line(_bitsDest, QPoint(Cube2D[1][1][1](X), Cube2D[1][1][1](Y)), QPoint(Cube2D[0][1][1](X), Cube2D[0][1][1](Y)), 255);
+    //    Line(_bitsDest, QPoint(Cube2D[1][1][1](X), Cube2D[1][1][1](Y)), QPoint(Cube2D[1][0][1](X), Cube2D[1][0][1](Y)), 255);
+    //    Line(_bitsDest, QPoint(Cube2D[1][1][1](X), Cube2D[1][1][1](Y)), QPoint(Cube2D[1][1][0](X), Cube2D[1][1][0](Y)), 255);
+    //    Line(_bitsDest, QPoint(Cube2D[1][1][0](X), Cube2D[1][1][0](Y)), QPoint(Cube2D[1][0][0](X), Cube2D[1][0][0](Y)), 255);
+    //    Line(_bitsDest, QPoint(Cube2D[1][1][0](X), Cube2D[1][1][0](Y)), QPoint(Cube2D[0][1][0](X), Cube2D[0][1][0](Y)), 255);
+    //    Line(_bitsDest, QPoint(Cube2D[0][0][1](X), Cube2D[0][0][1](Y)), QPoint(Cube2D[0][1][1](X), Cube2D[0][1][1](Y)), 255);
+    //    Line(_bitsDest, QPoint(Cube2D[0][0][1](X), Cube2D[0][0][1](Y)), QPoint(Cube2D[1][0][1](X), Cube2D[1][0][1](Y)), 255);
+    //    Line(_bitsDest, QPoint(Cube2D[1][0][0](X), Cube2D[1][0][0](Y)), QPoint(Cube2D[1][0][1](X), Cube2D[1][0][1](Y)), 255);
+    //    Line(_bitsDest, QPoint(Cube2D[0][1][1](X), Cube2D[0][1][1](Y)), QPoint(Cube2D[0][1][0](X), Cube2D[0][1][0](Y)), 255);
+
+
+    //std::cout << Cube2D[0][0][0].dot(Cube2D[0][1][0], Cube2D[1][0][0]) << std::endl;
+    // std::cout << b(X) * a(X) << "\t";
+    //    //    std::cout << "AX: " << a(X) << "\t";
+    //    //    std::cout << "BX: " << b(X) << "\t";
+    //    //    std::cout << "AY: " << a(Y) << "\t";
+    //    //    std::cout << "BY: " << b(Y) << "\t";
+    //    std::cout << a.dot(b) / (a.length() * b.length()) << "\t";
+    //    //
+    //    //    std::cout << "AX * BX: " << a(X) * b(X) << "\t";
+    //    //    std::cout << "AY * BY: " << a(Y) * b(Y) << "\t";
+    //    //    std::cout << "dot: " << a(X) * b(X) + a(Y) * b(Y) << "\t";
+    //
+    //    //std::cout <<(a.dot(b) / (a.length() * b.length())) * (180 / M_PI) << "\t";
+    //    //    std::cout << (180 / M_PI) * acos( (a.dot(b) / (a.length() * b.length())) * (180 / M_PI)) << "\t";
+    //    //    std::cout << (Cube2D[0][0][0].dot(Cube2D[0][1][0], Cube2D[1][0][0]) > 0) << "\t";
+    //    std::cout << std::endl;
+    //    //    // if (Cube2D[0][0][0].dot(Cube2D[0][1][0], Cube2D[1][0][0]) > 0) {
+    //    if (a.dot(b) > 0) {
+    //        dot = cross.dot(Light);
+    //        TextureMap(_bitsTexture, _bitsDest, Cube2D[0][0][0], Cube2D[1][0][0], Cube2D[0][1][0], 0, true);
+    //        //  TextureMap(Cube2D[0][0][0], Cube2D[1][0][0], Cube2D[0][1][0], 0, true);
+    //    }
+
+    //Tri[0] = {{0,0,0},{1,0,0},{0,1,0}};
+    //    cross = Cube3D[0][0][0].cross(Cube3D[1][0][0], Cube3D[0][1][0]);
+    //    cross.print();
+    //    if (cross.dot(POV) > 0) {
+    //        dot = cross.dot(Light);
+    //        TextureMap(_bitsTexture, _bitsDest, Cube2D[0][0][0], Cube2D[1][0][0], Cube2D[0][1][0], 0, true);
+    //    }
+    //        cross = Matrix::cross(Cube3D[1][1][0], Cube3D[0][1][0], Cube3D[1][0][0]);
+    //        if (Matrix::dot(cross, POV) > 0) {
+    //            dot = Matrix::dot(cross, Light);
+    //            TextureMap(Cube2D[1][1][0], Cube2D[1][0][0], Cube2D[0][1][0], dot / (LLength * cross.length()), false);
+    //        }
+    //
+    //    cross = Matrix::cross(Cube3D[0][0][1], Cube3D[0][1][1], Cube3D[1][0][1]);
+    //    if (Matrix::dot(cross, POV) > 0) {
+    //        dot = Matrix::dot(cross, Light);
+    //        TextureMap(Cube2D[0][0][1], Cube2D[1][0][1], Cube2D[0][1][1], dot / (LLength * cross.length()), true);
+    //    }
+    //    cross = Matrix::cross(Cube3D[1][1][1], Cube3D[1][0][1], Cube3D[0][1][1]);
+    //    if (Matrix::dot(cross, POV) > 0) {
+    //        dot = Matrix::dot(cross, Light);
+    //        TextureMap(Cube2D[1][1][1], Cube2D[1][0][1], Cube2D[0][1][1], dot / (LLength * cross.length()), false);
+    //    }
+    //
+    //    cross = Matrix::cross(Cube3D[0][0][0], Cube3D[0][1][0], Cube3D[0][0][1]);
+    //    if (Matrix::dot(cross, POV) > 0) {
+    //        dot = Matrix::dot(cross, Light);
+    //        TextureMap(Cube2D[0][0][0], Cube2D[0][1][0], Cube2D[0][0][1], dot / (LLength * cross.length()), true);
+    //    }
+    //    cross = Matrix::cross(Cube3D[0][1][1], Cube3D[0][0][1], Cube3D[0][1][0]);
+    //    if (Matrix::dot(cross, POV) > 0) {
+    //        dot = Matrix::dot(cross, Light);
+    //        TextureMap(Cube2D[0][1][1], Cube2D[0][1][0], Cube2D[0][0][1], dot / (LLength * cross.length()), false);
+    //    }
+    //
+    //    cross = Matrix::cross(Cube3D[1][0][0], Cube3D[1][0][1], Cube3D[1][1][0]);
+    //    if (Matrix::dot(cross, POV) > 0) {
+    //        dot = Matrix::dot(cross, Light);
+    //        TextureMap(Cube2D[1][0][0], Cube2D[1][1][0], Cube2D[1][0][1], dot / (LLength * cross.length()), true);
+    //    }
+    //    cross = Matrix::cross(Cube3D[1][1][1], Cube3D[1][1][0], Cube3D[1][0][1]);
+    //    if (Matrix::dot(cross, POV) > 0) {
+    //        dot = Matrix::dot(cross, Light);
+    //        TextureMap(Cube2D[1][1][1], Cube2D[1][1][0], Cube2D[1][0][1], dot / (LLength * cross.length()), false);
+    //    }
+    //
+    //    cross = Matrix::cross(Cube3D[0][0][0], Cube3D[0][0][1], Cube3D[1][0][0]);
+    //    if (Matrix::dot(cross, POV) > 0) {
+    //        dot = Matrix::dot(cross, Light);
+    //        TextureMap(Cube2D[0][0][0], Cube2D[1][0][0], Cube2D[0][0][1], dot / (LLength * cross.length()), true);
+    //    }
+    //    cross = Matrix::cross(Cube3D[1][0][1], Cube3D[1][0][0], Cube3D[0][0][1]);
+    //    if (Matrix::dot(cross, POV) > 0) {
+    //        dot = Matrix::dot(cross, Light);
+    //        TextureMap(Cube2D[1][0][1], Cube2D[1][0][0], Cube2D[0][0][1], dot / (LLength * cross.length()), false);
+    //    }
+    //
+    //    cross = Matrix::cross(Cube3D[0][1][0], Cube3D[1][1][0], Cube3D[0][1][1]);
+    //    if (Matrix::dot(cross, POV) > 0) {
+    //        dot = Matrix::dot(cross, Light);
+    //        TextureMap(Cube2D[0][1][0], Cube2D[1][1][0], Cube2D[0][1][1], dot / (LLength * cross.length()), true);
+    //    }
+    //    cross = Matrix::cross(Cube3D[1][1][1], Cube3D[0][1][1], Cube3D[1][1][0]);
+    //    if (Matrix::dot(cross, POV) > 0) {
+    //        dot = Matrix::dot(cross, Light);
+    //        TextureMap(Cube2D[1][1][1], Cube2D[1][1][0], Cube2D[0][1][1], dot / (LLength * cross.length()), false);
+    //    }
+    //
+    //    cross = Matrix::cross(Cube3D[0][0][1], Cube3D[0][1][1], Cube3D[1][0][1]);
+    //    if (Matrix::dot(cross, POV) > 0) {
+    //        dot = Matrix::dot(cross, Light);
+    //        TextureMap(Cube2D[0][0][1], Cube2D[1][0][1], Cube2D[0][1][1], dot / (LLength * cross.length()), true);
+    //    }
+    //    cross = Matrix::cross(Cube3D[1][1][1], Cube3D[1][0][1], Cube3D[0][1][1]);
+    //    if (Matrix::dot(cross, POV) > 0) {
+    //        dot = Matrix::dot(cross, Light);
+    //        TextureMap(Cube2D[1][1][1], Cube2D[1][0][1], Cube2D[0][1][1], dot / (LLength * cross.length()), false);
+    //    }
+    //
+    //    cross = Matrix::cross(Cube3D[0][0][0], Cube3D[1][0][0], Cube3D[0][1][0]);
+    //    if (Matrix::dot(cross, POV) > 0) {
+    //        dot = Matrix::dot(cross, Light);
+    //        TextureMap(Cube2D[0][0][0], Cube2D[1][0][0], Cube2D[0][1][0], dot / (LLength * cross.length()), true);
+    //    }
+    //    cross = Matrix::cross(Cube3D[1][1][0], Cube3D[0][1][0], Cube3D[1][0][0]);
+    //    if (Matrix::dot(cross, POV) > 0) {
+    //        dot = Matrix::dot(cross, Light);
+    //        TextureMap(Cube2D[1][1][0], Cube2D[1][0][0], Cube2D[0][1][0], dot / (LLength * cross.length()), false);
+    //    }
+    //
+    //    cross = Matrix::cross(Cube3D[0][0][1], Cube3D[0][1][1], Cube3D[1][0][1]);
+    //    if (Matrix::dot(cross, POV) > 0) {
+    //        dot = Matrix::dot(cross, Light);
+    //        TextureMap(Cube2D[0][0][1], Cube2D[1][0][1], Cube2D[0][1][1], dot / (LLength * cross.length()), true);
+    //    }
+    //    cross = Matrix::cross(Cube3D[1][1][1], Cube3D[1][0][1], Cube3D[0][1][1]);
+    //    if (Matrix::dot(cross, POV) > 0) {
+    //        dot = Matrix::dot(cross, Light);
+    //        TextureMap(Cube2D[1][1][1], Cube2D[1][0][1], Cube2D[0][1][1], dot / (LLength * cross.length()), false);
+    //    }

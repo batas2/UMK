@@ -51,5 +51,6 @@ public class Main {
                 gaston.bow(alphonse);
             }
         }).start();
+        System.out.print("dsads");
     }
 }

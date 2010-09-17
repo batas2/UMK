@@ -5,15 +5,11 @@
  * Created on 5 maj 2010, 16:16
  */
 
-#include <QtGui/QApplication>
+#include "MyWidget.h"
 
 int main(int argc, char *argv[]) {
-    // initialize resources, if needed
-    // Q_INIT_RESOURCE(resfile);
-
     QApplication app(argc, argv);
-
-    // create and show your widgets here
-
+    MyWidget widget(_PIC_X << 1, _PIC_Y << 1);
+    widget.show();
     return app.exec();
 }

@@ -72,7 +72,7 @@ MyWidget::MyWidget(int Width, int Height, QWidget *parent) : QWidget(parent) {
 
     setFixedSize(_w, _h);
     _image = new QImage(_w, _h, QImage::Format_RGB32);
-    _image->load("kwiat.jpg");
+    _image->load("/home/batas2/UMK/LGM/06_FloodFillB/kwiat.jpg");
     _max = _image->numBytes();
 
 }
