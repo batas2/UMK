@@ -44,10 +44,10 @@ public class Main {
                         System.out.println("Element: " + startElem.getName());
                         System.out.println("Parent: " + stack.pop());
 
-                        XMLEvent characterEvent = reader.nextEvent();
+                        XMLEvent valueEvent = reader.nextEvent();
 
-                        if (characterEvent.isCharacters()) {
-                            Characters c = characterEvent.asCharacters();
+                        if (valueEvent.isCharacters()) {
+                            Characters c = valueEvent.asCharacters();
                             System.out.println("Value: " + c.getData());
                         } else {
                             System.out.println("No Value");
