@@ -26,13 +26,10 @@ public class Main {
     public static void main(String[] args) throws XMLStreamException, FileNotFoundException {
 
         XMLInputFactory iFactory = XMLInputFactory.newInstance();
-        iFactory.setProperty("javax.xml.stream.isNamespaceAware", Boolean.TRUE);
-
         XMLEventReader reader = iFactory.createXMLEventReader(
                 new BufferedInputStream(new FileInputStream("src/input.xml")));
 
         Stack<String> stack = new Stack<String>();
-
 
         while (reader.hasNext()) {
             XMLEvent event = reader.nextEvent();
