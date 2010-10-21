@@ -6,7 +6,8 @@
 package stax;
 
 import java.io.*;
-import java.util.Iterator;
+import java.util.Stack;
+import javax.xml.namespace.QName;
 import javax.xml.stream.*;
 import javax.xml.stream.events.*;
 
@@ -30,34 +31,39 @@ public class Main {
         XMLEventReader reader = iFactory.createXMLEventReader(
                 new BufferedInputStream(new FileInputStream("src/input.xml")));
 
-        String parent = "";
-        boolean b = false;
+        Stack<String> stack = new Stack<String>();
+
 
         while (reader.hasNext()) {
             XMLEvent event = reader.nextEvent();
 
             switch (event.getEventType()) {
                 case XMLStreamConstants.START_ELEMENT:
+
                     StartElement startElem = event.asStartElement();
-                    Iterator<?> attrs = startElem.getAttributes();
-                    while (attrs.hasNext()) {
+                    Attribute a = startElem.getAttributeByName(new QName(attrName));
 
-                        Attribute a = (Attribute) attrs.next();
+                    if (a != null && a.getValue().equals(attrValue)) {
+                        System.out.println("Element: " + startElem.getName());
+                        System.out.println("Parent: " + stack.pop());
 
-                        if (a.getName().toString().equals(attrName) && a.getValue().equals(attrValue)) {
-                            System.out.println("Element: " + startElem.getName());
-                            System.out.println("Parent: " + parent);
-                            b = true;
+                        XMLEvent characterEvent = reader.nextEvent();
+
+                        if (characterEvent.isCharacters()) {
+                            Characters c = characterEvent.asCharacters();
+                            System.out.println("Value: " + c.getData());
+                        } else {
+                            System.out.println("No Value");
                         }
-                    }
-                    parent = startElem.getName().toString();
-                    break;
-                case XMLStreamConstants.CHARACTERS:
-                    if (b) {
-                        Characters c = event.asCharacters();
-                        System.out.println("Value: " + c.getData());
+
                         System.out.println();
-                        b = false;
+                    }
+
+                    stack.push(startElem.getName().toString());
+                    break;
+                case XMLStreamConstants.END_ELEMENT:
+                    if (!stack.empty()) {
+                        stack.pop();
                     }
                     break;
             }
